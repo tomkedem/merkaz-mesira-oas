@@ -43,7 +43,7 @@ paths:
           description: Bad request
         '500':
           description: Internal server error
-  /sakim:
+  /sakim/load:
     post:
       summary: Load Sakim data
       tags: [KabalatSakim]
@@ -64,7 +64,7 @@ paths:
           description: Bad request
         '500':
           description: Internal server error  
-  /barcodes/search:
+  /barcod/insert:
     post:
       summary: Search barcode information
       tags: [KabalatSakim]
