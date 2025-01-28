@@ -1,0 +1,646 @@
+openapi: 3.0.1
+info:
+  title: API providing data for merkazmesira-client-application
+  version: 1.0.0
+  description: API providing data for merkazmesira-client-application. In this version, validation and required fields of the schemas, as well as securityDefenition and authentication are not supported.
+
+servers:  
+  - description: Api for merkazmesira-client-application (dev branch) on Azure 
+    url: https://post-mesira-api-dev.azurewebsites.net/
+  - description: Api for merkazmesira-client-application (dev branch) on Dev 
+    url: https://localhost:7274/        
+  - description: Authenticate
+    url: https://post-sso-dev.azurewebsites.net/v1.0.0/   
+tags:
+  - name: Login
+  - name: KabalatSakim
+  - name: Chatima    
+  - name: Mesira
+    description: provide demo data for merkazmesira 
+     
+  
+paths:
+  /users/details:
+    post:
+      summary: Retrieve user details
+      tags: [Login]
+      operationId: GetUserDetails      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetUserDetailsRequest'
+              
+
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserDetailsResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /sakim:
+    post:
+      summary: Load Sakim data
+      tags: [KabalatSakim]
+      operationId: LoadSakimForHalima
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadSakimRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadSakimResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error  
+  /barcodes/search:
+    post:
+      summary: Search barcode information
+      tags: [KabalatSakim]
+      operationId: InsertBarcode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertBarcodeRequest'
+      responses:
+        '201':
+          description: Barcode inserted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertBarcodeResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error  
+  /delivery/statuses:
+    post:
+      summary: Retrieve delivery status list
+      tags: [Mesira]
+      operationId: GetDeliveryStatuses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryStatusListRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryStatusListResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /barcodes/chatima:
+    post:
+      summary: Insert barcode with signature details
+      tags: [Chatima]
+      operationId: InsertBarcodeChatima
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertBarcodeChatimaRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertBarcodeChatimaResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error  
+  
+          
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT      
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        ErrorID:
+          type: string
+          example: "ERR001"
+          description: Unique identifier for the error
+        ErrorDescription:
+          type: string
+          example: "Invalid input data"
+          description: Detailed description of the error
+    GetUserDetailsRequest:
+      type: object
+      properties:
+        UserID:
+          type: string
+          example: "012345678"                
+    GetUserDetailsResponse:
+      type: object
+      properties:
+        GetUserDetailsResult:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "משה כהן"
+            SiteName:
+              type: string
+              example: "טסט אלף"
+            SiteNumber:
+              type: string
+              example: "1000"
+            SugAtar:
+              type: integer
+              example: 14
+            UserGroup:
+              type: string
+              example: "16"
+            UserGroupName:
+              type: string
+              example: "משתמש מרכז מסירה"
+            UserID:
+              type: string
+              example: "012345678"
+            shouldDisplayKabalaScreen:
+              type: boolean
+              example: true
+            shouldPrintHodaotResult:
+              type: boolean
+              example: true
+        Error:
+          $ref: '#/components/schemas/Error'
+    LoadSakimRequest:
+      type: object
+      properties:
+        UserID:
+          type: string
+          example: "012345678"
+        SiteNumber:
+          type: string
+          example: "1000"
+    LoadSakimResponse:
+      type: object
+      properties:
+        LoadSakimForHalimaResult:
+          type: object
+          properties:
+            ArrivedList:
+              type: array
+              items:
+                type: object
+                properties:
+                  Atar:
+                    type: string
+                    nullable: true
+                    example: null
+                  Barcode:
+                    type: string
+                    example: "SE20130682705"
+                  Color:
+                    type: string
+                    nullable: true
+                    example: null
+                  PerutPeula:
+                    type: string
+                    nullable: true
+                    example: null
+                  Pritim:
+                    type: string
+                    nullable: true
+                    example: null
+                  ShemAtar:
+                    type: string
+                    nullable: true
+                    example: null
+                  ZmanKlita:
+                    type: string
+                    nullable: true
+                    example: null
+              example:
+                - Atar: null
+                  Barcode: "SE20130682705"
+                  Color: null
+                  PerutPeula: null
+                  Pritim: null
+                  ShemAtar: null
+                  ZmanKlita: null
+                - Atar: null
+                  Barcode: "SE20130659105"
+                  Color: null
+                  PerutPeula: null
+                  Pritim: null
+                  ShemAtar: null
+                  ZmanKlita: null
+            ReceivedOkList:
+              type: array
+              items:
+                type: object
+                properties:
+                  Barcode:
+                    type: string
+                    example: "RD258873736IL"
+                  Color:
+                    type: string
+                    example: "Green"
+                  PerutPeula:
+                    type: string
+                    example: "21"
+                  ZmanKlita:
+                    type: string
+                    example: "16/01/2025 10:43:31"
+              example:
+                - Barcode: "RD258873736IL"
+                  Color: "Green"
+                  PerutPeula: "21"
+                  ZmanKlita: "16/01/2025 10:43:31"
+                - Barcode: "RD258873682IL"
+                  Color: "Green"
+                  PerutPeula: "21"
+                  ZmanKlita: "16/01/2025 10:43:38"
+            ReceivedOtherList:
+              type: array
+              items:
+                type: object
+                properties:
+                  Atar:
+                    type: string
+                    nullable: true
+                    example: ""
+                  Barcode:
+                    type: string
+                    example: "SE20130683205"
+                  Color:
+                    type: string
+                    example: "Red"
+                  PerutPeula:
+                    type: string
+                    example: "24"
+                  Received:
+                    type: string
+                    nullable: true
+                    example: null
+                  TeurPeula:
+                    type: string
+                    example: "שק ללא קריאה במיון"
+              example:
+                - Atar: ""
+                  Barcode: "SE20130683205"
+                  Color: "Red"
+                  PerutPeula: "24"
+                  Received: null
+                  TeurPeula: "שק ללא קריאה במיון"
+                - Atar: ""
+                  Barcode: "SE20130683705"
+                  Color: "Red"
+                  PerutPeula: "24"
+                  Received: null
+                  TeurPeula: "שק ללא קריאה במיון"
+        faultError:
+          type: string
+          nullable: true
+        Error:
+          $ref: '#/components/schemas/Error'
+    InsertBarcodeChatimaRequest:
+      type: object
+      properties:
+        userID:
+          type: string
+          example: "1000028"
+        barcode:
+          type: string
+          example: "RR11111111111"
+        barcodeMekabets:
+          type: string
+          example: "RD000000005IL"
+        codeReason:
+          type: integer
+          example: 1
+        dateTime:
+          type: string
+          nullable: true
+          example: null
+        KodMesira:
+          type: integer
+          example: 1234
+        chatimaDetails:
+          type: object
+          properties:
+            Chatima:
+              type: array
+              items:
+                type: string
+            ChatimaPirsomet:
+              type: string
+              nullable: true
+              example: null
+            Davar:
+              type: integer
+              example: 0
+            FName:
+              type: string
+              example: "עמית"
+            FNameNiman:
+              type: string
+              nullable: true
+              example: null
+            LName:
+              type: string
+              example: "בהאשר"
+            LNameNiman:
+              type: string
+              nullable: true
+              example: null
+            MekabelName:
+              type: string
+              nullable: true
+              example: null
+            Number:
+              type: string
+              example: "96"
+            NumberNiman:
+              type: string
+              nullable: true
+              example: null
+            Offline:
+              type: boolean
+              example: false
+            Phone:
+              type: string
+              example: "0545653232"
+            Pirsomet:
+              type: boolean
+              example: false
+            Rechov:
+              type: string
+              nullable: true
+              example: null
+            RechovFree:
+              type: string
+              example: "אלון יגאל"
+            Status:
+              type: integer
+              example: 1
+            TZ:
+              type: string
+              example: "207678962"
+            Yishuv:
+              type: integer
+              example: 3000
+            DisplayStatus:
+              type: string
+              example: "נמסר לנמען"
+            Code:
+              type: integer
+              example: 1
+    InsertBarcodeChatimaResponse:
+      type: object
+      properties:
+        DeliveryCheckBarcodeWithParitDetailsResult:
+          type: object
+          properties:
+            Barcode:
+              type: string
+              example: "RR11111111111"
+            Mekabetz:
+              type: string
+              example: ""
+            Mikum:
+              type: string
+              nullable: true
+              example: null
+            ServiceDescription:
+              type: string
+              example: "רשום RR11111111111"
+            WarringDescription:
+              type: string
+              nullable: true
+              example: null
+        barcodes:
+          type: array
+          items:
+            type: string
+          example: []
+        countItems:
+          type: integer
+          example: 0
+        chatimaDetails:
+          type: object
+          properties:
+            AddressNiman:
+              type: string
+              nullable: true
+              example: null
+            Barcode:
+              type: string
+              example: "RR11111111111"
+            Chatima:
+              type: string
+              nullable: true
+              example: null
+            ChatimaPirsomet:
+              type: string
+              nullable: true
+              example: null
+            Davar:
+              type: integer
+              example: 0
+            FName:
+              type: string
+              example: "Tomer"
+            FNameNiman:
+              type: string
+              nullable: true
+              example: null
+            LName:
+              type: string
+              example: "Lu"
+            LNameNiman:
+              type: string
+              nullable: true
+              example: null
+            MekabelName:
+              type: string
+              nullable: true
+              example: null
+            Number:
+              type: string
+              example: "94"
+            NumberNiman:
+              type: string
+              nullable: true
+              example: null
+            Offline:
+              type: boolean
+              example: false
+            Phone:
+              type: string
+              example: "0509555660"
+            Pirsomet:
+              type: boolean
+              example: false
+            Rechov:
+              type: string
+              nullable: true
+              example: null
+            RechovFree:
+              type: string
+              example: "אלון יגאל"
+            Status:
+              type: integer
+              example: 0
+            TZ:
+              type: string
+              nullable: true
+              example: null
+            Yishuv:
+              type: string
+              nullable: true
+              example: null
+        codeMesira:
+          type: string
+          nullable: true
+          example: ""
+        Error:
+          $ref: '#/components/schemas/Error'
+    DeliveryStatusListRequest:
+      type: object
+      properties:
+        UserID:
+          type: string
+          example: "012345678"
+        SiteNumber:
+          type: string
+          example: "1000"
+    DeliveryStatusListResponse:
+      type: object
+      properties:
+        DeliveryStatuses:
+          type: array
+          items:
+            type: object
+            properties:
+              KodPeula:
+                type: string
+                example: "1"
+              id:
+                type: number
+                example: 1
+              desc:
+                type: string
+                example: "נמסר לנמען"
+          example:
+            - KodPeula: "1"
+              id: 1
+              desc: "נמסר לנמען"
+            - KodPeula: "1"
+              id: 2
+              desc: "נמסר לנציג הנמען"
+            - KodPeula: "1"
+              id: 3
+              desc: 'נמסר למיופ"כ מ-18'
+            - KodPeula: "1"
+              id: 4
+              desc: 'נמסר למיופ"כ מ-16'
+            - KodPeula: "1"
+              id: 5
+              desc: "נמסר חזרה לשולח"
+            - KodPeula: "1"
+              id: 6
+              desc: "הודבקה על הדלת"
+            - KodPeula: "1"
+              id: 7
+              desc: "הועבר למסירה באמצעות שליח"
+            - KodPeula: "1"
+              id: 8
+              desc: "נמסר לשליח GETT"
+            - KodPeula: "1"
+              id: 9
+              desc: "הונח בתיבה"        
+            - KodPeula: "3"
+              id: 1
+              desc: "לא נדרש"
+            - KodPeula: "3"
+              id: 2
+              desc: "סרב לקבל"
+            - KodPeula: "3"
+              id: 3
+              desc: "עזב"
+            - KodPeula: "3"
+              id: 4
+              desc: "תא דואר שגוי"
+            - KodPeula: "3"
+              id: 5
+              desc: "לא ידוע בתא דואר"
+            - KodPeula: "3"
+              id: 6
+              desc: "בבירור"
+            - KodPeula: "3"
+              id: 7
+              desc: "הפנייה"
+            - KodPeula: "3"
+              id: 8
+              desc: "ניתוב שגוי"
+            - KodPeula: "3"
+              id: 9
+              desc: "פגום"
+    InsertBarcodeRequest:
+      type: object
+      properties:
+        userID:
+          type: string
+          example: "1000028"
+        barcode:
+          type: string
+          example: "RR11111111111"
+        barcodeMekabets:
+          type: string
+          example: "RD000000005IL"
+        codeReason:
+          type: integer
+          example: 1
+        Date:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+    InsertBarcodeResponse:
+      type: object
+      properties:
+        userID:
+          type: string
+          example: "1000028"
+        barcode:
+          type: string
+          example: "RR11111111111"
+        codeReason:
+          type: integer
+          example: 1
+        MoveToChatima:
+          type: boolean
+          example: true
+        IsKodMesira:
+          type: boolean
+          example: false
+        Error:
+          $ref: '#/components/schemas/Error'      
+security:
+  - bearerAuth: []  

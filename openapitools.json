@@ -1,0 +1,39 @@
+{
+  "spaces": 2,
+  "generator-cli": {
+    "version": "6.0.1",
+    "generators": {
+      "angular": {
+        "generatorName": "typescript-angular",
+        "output": "#{cwd}/output/v1.0.0/api",
+        "glob": "merkazmesira-api-v1.0.0.yaml",
+        "additionalProperties": {
+          "supportsES6": true
+        }
+      },
+      "aspnetcore": { 
+        "generatorName": "aspnetcore",
+        "output": "#{cwd}/output/v1.0.0/aspnetcore",
+        "glob": "merkazmesira-api-v1.0.0.yaml",
+        "additionalProperties": {
+          "packageName": "merkazmesiraApi",
+          "packageTitle": "merkazmesiraApi",
+          "packageVersion": "1.6.0",
+          "aspnetCoreVersion": "8.0",
+          "buildTarget": "program",
+          "generateBody": true,
+          "newtonsoftVersion": "13.0.1",
+          "nullableReferenceTypes": true,
+          "operationIsAsync": false,
+          "packageAuthors": "Tomer Kedem & Yehonatan Maman",
+          "operationResultTask": false,
+          "swashbuckleVersion": "6.0.0",
+          "useDefaultRouting": true,
+          "useFrameworkReference": true,
+          "useNewtonsoft": true,
+          "useSwashbuckle": true 
+        }
+      }
+    }
+  }
+}
