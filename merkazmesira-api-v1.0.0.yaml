@@ -240,7 +240,7 @@ components:
         GetUserDetailsResult:
           type: object
           properties:
-            name:
+            Name:
               type: string
               example: "משה כהן"
             SiteName:
@@ -261,10 +261,10 @@ components:
             UserID:
               type: string
               example: "012345678"
-            shouldDisplayKabalaScreen:
+            ShouldDisplayKabalaScreen:
               type: boolean
               example: true
-            shouldPrintHodaotResult:
+            ShouldPrintHodaotResult:
               type: boolean
               example: true        
     LoadSakimRequest:
@@ -399,26 +399,26 @@ components:
     InsertBarcodeChatimaRequest:
       type: object
       properties:
-        userID:
+        UserID:
           type: string
           example: "1000028"
-        barcode:
+        Barcode:
           type: string
           example: "RR11111111111"
-        barcodeMekabets:
+        BarcodeMekabets:
           type: string
           example: "RD000000005IL"
-        codeReason:
+        CodeReason:
           type: integer
           example: 1
-        dateTime:
+        DateTime:
           type: string
           nullable: true
           example: null
         KodMesira:
           type: integer
           example: 1234
-        chatimaDetails:
+        ChatimaDetailsRequest:
           type: object
           properties:
             Chatima:
@@ -511,15 +511,15 @@ components:
               type: string
               nullable: true
               example: null
-        barcodes:
+        Barcodes:
           type: array
           items:
             type: string
           example: []
-        countItems:
+        CountItems:
           type: integer
           example: 0
-        chatimaDetails:
+        ChatimaDetailsResponse:
           type: object
           properties:
             AddressNiman:
@@ -592,7 +592,7 @@ components:
               type: string
               nullable: true
               example: null
-        codeMesira:
+        CodeMesira:
           type: string
           nullable: true
           example: ""        
@@ -616,80 +616,80 @@ components:
               KodPeula:
                 type: string
                 example: "1"
-              id:
+              Id:
                 type: number
                 example: 1
-              desc:
+              Desc:
                 type: string
                 example: "נמסר לנמען"
           example:
             - KodPeula: "1"
-              id: 1
-              desc: "נמסר לנמען"
+              Id: 1
+              Desc: "נמסר לנמען"
             - KodPeula: "1"
-              id: 2
-              desc: "נמסר לנציג הנמען"
+              Id: 2
+              Desc: "נמסר לנציג הנמען"
             - KodPeula: "1"
-              id: 3
-              desc: 'נמסר למיופ"כ מ-18'
+              Id: 3
+              Desc: 'נמסר למיופ"כ מ-18'
             - KodPeula: "1"
-              id: 4
-              desc: 'נמסר למיופ"כ מ-16'
+              Id: 4
+              Desc: 'נמסר למיופ"כ מ-16'
             - KodPeula: "1"
-              id: 5
-              desc: "נמסר חזרה לשולח"
+              Id: 5
+              Desc: "נמסר חזרה לשולח"
             - KodPeula: "1"
-              id: 6
-              desc: "הודבקה על הדלת"
+              Id: 6
+              Desc: "הודבקה על הדלת"
             - KodPeula: "1"
-              id: 7
-              desc: "הועבר למסירה באמצעות שליח"
+              Id: 7
+              Desc: "הועבר למסירה באמצעות שליח"
             - KodPeula: "1"
-              id: 8
-              desc: "נמסר לשליח GETT"
+              Id: 8
+              Desc: "נמסר לשליח GETT"
             - KodPeula: "1"
-              id: 9
-              desc: "הונח בתיבה"        
+              Id: 9
+              Desc: "הונח בתיבה"        
             - KodPeula: "3"
-              id: 1
-              desc: "לא נדרש"
+              Id: 1
+              Desc: "לא נדרש"
             - KodPeula: "3"
-              id: 2
-              desc: "סרב לקבל"
+              Id: 2
+              Desc: "סרב לקבל"
             - KodPeula: "3"
-              id: 3
-              desc: "עזב"
+              Id: 3
+              Desc: "עזב"
             - KodPeula: "3"
-              id: 4
-              desc: "תא דואר שגוי"
+              Id: 4
+              Desc: "תא דואר שגוי"
             - KodPeula: "3"
-              id: 5
-              desc: "לא ידוע בתא דואר"
+              Id: 5
+              Desc: "לא ידוע בתא דואר"
             - KodPeula: "3"
-              id: 6
-              desc: "בבירור"
+              Id: 6
+              Desc: "בבירור"
             - KodPeula: "3"
-              id: 7
-              desc: "הפנייה"
+              Id: 7
+              Desc: "הפנייה"
             - KodPeula: "3"
-              id: 8
-              desc: "ניתוב שגוי"
+              Id: 8
+              Desc: "ניתוב שגוי"
             - KodPeula: "3"
-              id: 9
-              desc: "פגום"
+              Id: 9
+              Desc: "פגום"
     InsertBarcodeRequest:
       type: object
       properties:
-        userID:
+        UserID:
           type: string
           example: "1000028"
-        barcode:
+        Barcode:
           type: string
           example: "RR11111111111"
-        barcodeMekabets:
+        BarcodeMekabets:
           type: string
           example: "RD000000005IL"
-        codeReason:
+        CodeReason:
           type: integer
           example: 1
         Date:
@@ -699,13 +699,13 @@ components:
     InsertBarcodeResponse:
       type: object
       properties:
-        userID:
+        UserID:
           type: string
           example: "1000028"
-        barcode:
+        Barcode:
           type: string
           example: "RR11111111111"
-        codeReason:
+        CodeReason:
           type: integer
           example: 1
         MoveToChatima:
