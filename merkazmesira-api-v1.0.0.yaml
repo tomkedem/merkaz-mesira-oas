@@ -40,9 +40,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetUserDetailsResponse'
         '400':
-          description: Bad request
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
   /sakim/load:
     post:
       summary: Load Sakim data
@@ -61,9 +67,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/LoadSakimResponse'
         '400':
-          description: Bad request
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
-          description: Internal server error  
+          $ref: '#/components/responses/InternalServerError'
   /barcod/insert:
     post:
       summary: Search barcode information
@@ -82,9 +94,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/InsertBarcodeResponse'
         '400':
-          description: Bad request
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
-          description: Internal server error  
+          $ref: '#/components/responses/InternalServerError'
   /delivery/statuses:
     post:
       summary: Retrieve delivery status list
@@ -103,9 +121,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/DeliveryStatusListResponse'
         '400':
-          description: Bad request
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
   /barcodes/chatima:
     post:
       summary: Insert barcode with signature details
@@ -124,9 +148,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/InsertBarcodeChatimaResponse'
         '400':
-          description: Bad request
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
-          description: Internal server error  
+          $ref: '#/components/responses/InternalServerError'
   
           
 components:
@@ -135,19 +165,64 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT      
-
+  responses:
+    BadRequest:
+      description: Bad request (invalid input)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized (missing or invalid authentication)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden (user lacks permissions)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
       properties:
+        StatusCode:
+          type: integer
+          example: 400
+          description: The HTTP status code associated with the error (e.g., 400, 401, 403, 500).
         ErrorID:
           type: string
-          example: "ERR001"
-          description: Unique identifier for the error
+          example: "E400"
+          description: Unique identifier for the error, following standard error codes.
         ErrorDescription:
           type: string
           example: "Invalid input data"
-          description: Detailed description of the error
+          description: A brief, user-friendly description of the error.
+        Details:
+          type: string
+          nullable: true
+          example: "Missing required fields: UserID, Barcode"
+          description: Additional details for debugging, included only when relevant.
+        Timestamp:
+          type: string
+          format: date-time
+          example: "2025-01-29T14:30:00Z"
+          description: The exact UTC time when the error occurred.
+
     GetUserDetailsRequest:
       type: object
       properties:
@@ -186,9 +261,7 @@ components:
               example: true
             shouldPrintHodaotResult:
               type: boolean
-              example: true
-        Error:
-          $ref: '#/components/schemas/Error'
+              example: true        
     LoadSakimRequest:
       type: object
       properties:
@@ -317,9 +390,7 @@ components:
                   TeurPeula: "שק ללא קריאה במיון"
         faultError:
           type: string
-          nullable: true
-        Error:
-          $ref: '#/components/schemas/Error'
+          nullable: true        
     InsertBarcodeChatimaRequest:
       type: object
       properties:
@@ -519,9 +590,7 @@ components:
         codeMesira:
           type: string
           nullable: true
-          example: ""
-        Error:
-          $ref: '#/components/schemas/Error'
+          example: ""        
     DeliveryStatusListRequest:
       type: object
       properties:
@@ -639,8 +708,6 @@ components:
           example: true
         IsKodMesira:
           type: boolean
-          example: false
-        Error:
-          $ref: '#/components/schemas/Error'      
+          example: false            
 security:
   - bearerAuth: []  
