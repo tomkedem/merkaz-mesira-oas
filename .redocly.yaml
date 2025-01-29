@@ -1,0 +1,3 @@
+rules:
+  no-server-example-com: off
+  no-server-trailing-slash: off
