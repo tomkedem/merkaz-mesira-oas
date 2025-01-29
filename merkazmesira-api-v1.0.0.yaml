@@ -34,7 +34,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GetUserDetailsRequest'
+              $ref: '#/components/schemas/UserDetailsRequest'
               
 
       responses:
@@ -43,7 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetUserDetailsResponse'
+                $ref: '#/components/schemas/UserDetailsResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -228,16 +228,16 @@ components:
           example: "2025-01-29T14:30:00Z"
           description: The exact UTC time when the error occurred.
 
-    GetUserDetailsRequest:
+    UserDetailsRequest:
       type: object
       properties:
         UserID:
           type: string
           example: "012345678"                
-    GetUserDetailsResponse:
+    UserDetailsResponse:
       type: object
       properties:
-        GetUserDetailsResult:
+        UserDetailsResult:
           type: object
           properties:
             Name:
