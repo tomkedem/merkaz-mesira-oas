@@ -20,7 +20,7 @@ tags:
     description: "Endpoints for managing Kabalat Sakim operations"
   - name: Chatima
     description: "Endpoints for handling Chatima-related operations"
-  - name: Mesira
+  - name: Delivery
     description: provide demo data for merkazmesira 
      
   
@@ -111,7 +111,7 @@ paths:
   /delivery/statuses:
     post:
       summary: Retrieve delivery status list
-      tags: [Mesira]
+      tags: [Delivery]
       operationId: GetDeliveryStatuses
       requestBody:
         content:
