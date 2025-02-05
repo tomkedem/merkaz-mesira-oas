@@ -267,335 +267,6 @@ components:
             ShouldPrintHodaotResult:
               type: boolean
               example: true        
-    LoadSakimRequest:
-      type: object
-      properties:
-        UserID:
-          type: string
-          example: "012345678"
-        SiteNumber:
-          type: string
-          example: "1000"
-    LoadSakimResponse:
-      type: object
-      properties:
-        LoadSakimForHalimaResult:
-          type: object
-          properties:
-            ArrivedList:
-              type: array
-              items:
-                type: object
-                properties:
-                  Atar:
-                    type: string
-                    nullable: true
-                    example: null
-                  Barcode:
-                    type: string
-                    example: "SE20130682705"
-                  Color:
-                    type: string
-                    nullable: true
-                    example: null
-                  PerutPeula:
-                    type: string
-                    nullable: true
-                    example: null
-                  Pritim:
-                    type: string
-                    nullable: true
-                    example: null
-                  ShemAtar:
-                    type: string
-                    nullable: true
-                    example: null
-                  ZmanKlita:
-                    type: string
-                    nullable: true
-                    example: null
-              example:
-                - Atar: null
-                  Barcode: "SE20130682705"
-                  Color: null
-                  PerutPeula: null
-                  Pritim: null
-                  ShemAtar: null
-                  ZmanKlita: null
-                - Atar: null
-                  Barcode: "SE20130659105"
-                  Color: null
-                  PerutPeula: null
-                  Pritim: null
-                  ShemAtar: null
-                  ZmanKlita: null
-            ReceivedOkList:
-              type: array
-              items:
-                type: object
-                properties:
-                  Barcode:
-                    type: string
-                    example: "RD258873736IL"
-                  Color:
-                    type: string
-                    example: "Green"
-                  PerutPeula:
-                    type: string
-                    example: "21"
-                  ZmanKlita:
-                    type: string
-                    example: "16/01/2025 10:43:31"
-              example:
-                - Barcode: "RD258873736IL"
-                  Color: "Green"
-                  PerutPeula: "21"
-                  ZmanKlita: "16/01/2025 10:43:31"
-                - Barcode: "RD258873682IL"
-                  Color: "Green"
-                  PerutPeula: "21"
-                  ZmanKlita: "16/01/2025 10:43:38"
-            ReceivedOtherList:
-              type: array
-              items:
-                type: object
-                properties:
-                  Atar:
-                    type: string
-                    nullable: true
-                    example: ""
-                  Barcode:
-                    type: string
-                    example: "SE20130683205"
-                  Color:
-                    type: string
-                    example: "Red"
-                  PerutPeula:
-                    type: string
-                    example: "24"
-                  Received:
-                    type: string
-                    nullable: true
-                    example: null
-                  TeurPeula:
-                    type: string
-                    example: "שק ללא קריאה במיון"
-              example:
-                - Atar: ""
-                  Barcode: "SE20130683205"
-                  Color: "Red"
-                  PerutPeula: "24"
-                  Received: null
-                  TeurPeula: "שק ללא קריאה במיון"
-                - Atar: ""
-                  Barcode: "SE20130683705"
-                  Color: "Red"
-                  PerutPeula: "24"
-                  Received: null
-                  TeurPeula: "שק ללא קריאה במיון"
-        faultError:
-          type: string
-          nullable: true        
-    InsertBarcodeChatimaRequest:
-      type: object
-      properties:
-        UserID:
-          type: string
-          example: "1000028"
-        Barcode:
-          type: string
-          example: "RR11111111111"
-        BarcodeMekabets:
-          type: string
-          example: "RD000000005IL"
-        CodeReason:
-          type: integer
-          example: 1
-        DateTime:
-          type: string
-          nullable: true
-          example: null
-        KodMesira:
-          type: integer
-          example: 1234
-        ChatimaDetailsRequest:
-          type: object
-          properties:
-            Chatima:
-              type: array
-              items:
-                type: string
-            ChatimaPirsomet:
-              type: string
-              nullable: true
-              example: null
-            Davar:
-              type: integer
-              example: 0
-            FName:
-              type: string
-              example: "עמית"
-            FNameNiman:
-              type: string
-              nullable: true
-              example: null
-            LName:
-              type: string
-              example: "בהאשר"
-            LNameNiman:
-              type: string
-              nullable: true
-              example: null
-            MekabelName:
-              type: string
-              nullable: true
-              example: null
-            Number:
-              type: string
-              example: "96"
-            NumberNiman:
-              type: string
-              nullable: true
-              example: null
-            Offline:
-              type: boolean
-              example: false
-            Phone:
-              type: string
-              example: "0545653232"
-            Pirsomet:
-              type: boolean
-              example: false
-            Rechov:
-              type: string
-              nullable: true
-              example: null
-            RechovFree:
-              type: string
-              example: "אלון יגאל"
-            Status:
-              type: integer
-              example: 1
-            TZ:
-              type: string
-              example: "207678962"
-            Yishuv:
-              type: integer
-              example: 3000
-            DisplayStatus:
-              type: string
-              example: "נמסר לנמען"
-            Code:
-              type: integer
-              example: 1
-    InsertBarcodeChatimaResponse:
-      type: object
-      properties:
-        DeliveryCheckBarcodeWithParitDetailsResult:
-          type: object
-          properties:
-            Barcode:
-              type: string
-              example: "RR11111111111"
-            Mekabetz:
-              type: string
-              example: ""
-            Mikum:
-              type: string
-              nullable: true
-              example: null
-            ServiceDescription:
-              type: string
-              example: "רשום RR11111111111"
-            WarringDescription:
-              type: string
-              nullable: true
-              example: null
-        Barcodes:
-          type: array
-          items:
-            type: string
-          example: []
-        CountItems:
-          type: integer
-          example: 0
-        ChatimaDetailsResponse:
-          type: object
-          properties:
-            AddressNiman:
-              type: string
-              nullable: true
-              example: null
-            Barcode:
-              type: string
-              example: "RR11111111111"
-            Chatima:
-              type: string
-              nullable: true
-              example: null
-            ChatimaPirsomet:
-              type: string
-              nullable: true
-              example: null
-            Davar:
-              type: integer
-              example: 0
-            FName:
-              type: string
-              example: "Tomer"
-            FNameNiman:
-              type: string
-              nullable: true
-              example: null
-            LName:
-              type: string
-              example: "Lu"
-            LNameNiman:
-              type: string
-              nullable: true
-              example: null
-            MekabelName:
-              type: string
-              nullable: true
-              example: null
-            Number:
-              type: string
-              example: "94"
-            NumberNiman:
-              type: string
-              nullable: true
-              example: null
-            Offline:
-              type: boolean
-              example: false
-            Phone:
-              type: string
-              example: "0509555660"
-            Pirsomet:
-              type: boolean
-              example: false
-            Rechov:
-              type: string
-              nullable: true
-              example: null
-            RechovFree:
-              type: string
-              example: "אלון יגאל"
-            Status:
-              type: integer
-              example: 0
-            TZ:
-              type: string
-              nullable: true
-              example: null
-            Yishuv:
-              type: string
-              nullable: true
-              example: null
-        CodeMesira:
-          type: string
-          nullable: true
-          example: ""        
     DeliveryStatusListRequest:
       type: object
       properties:
@@ -613,106 +284,73 @@ components:
           items:
             type: object
             properties:
-              KodPeula:
-                type: string
-                example: "1"
-              Id:
+              kodPeula:
                 type: number
                 example: 1
-              Desc:
+              perutPeula:
+                type: number
+                example: 1
+              teurPeula:
                 type: string
                 example: "נמסר לנמען"
+              isDelivery:
+                type: boolean  
+                example: true
           example:
-            - KodPeula: "1"
-              Id: 1
-              Desc: "נמסר לנמען"
-            - KodPeula: "1"
-              Id: 2
-              Desc: "נמסר לנציג הנמען"
-            - KodPeula: "1"
-              Id: 3
-              Desc: 'נמסר למיופ"כ מ-18'
-            - KodPeula: "1"
-              Id: 4
-              Desc: 'נמסר למיופ"כ מ-16'
-            - KodPeula: "1"
-              Id: 5
-              Desc: "נמסר חזרה לשולח"
-            - KodPeula: "1"
-              Id: 6
-              Desc: "הודבקה על הדלת"
-            - KodPeula: "1"
-              Id: 7
-              Desc: "הועבר למסירה באמצעות שליח"
-            - KodPeula: "1"
-              Id: 8
-              Desc: "נמסר לשליח GETT"
-            - KodPeula: "1"
-              Id: 9
-              Desc: "הונח בתיבה"        
-            - KodPeula: "3"
-              Id: 1
-              Desc: "לא נדרש"
-            - KodPeula: "3"
-              Id: 2
-              Desc: "סרב לקבל"
-            - KodPeula: "3"
-              Id: 3
-              Desc: "עזב"
-            - KodPeula: "3"
-              Id: 4
-              Desc: "תא דואר שגוי"
-            - KodPeula: "3"
-              Id: 5
-              Desc: "לא ידוע בתא דואר"
-            - KodPeula: "3"
-              Id: 6
-              Desc: "בבירור"
-            - KodPeula: "3"
-              Id: 7
-              Desc: "הפנייה"
-            - KodPeula: "3"
-              Id: 8
-              Desc: "ניתוב שגוי"
-            - KodPeula: "3"
-              Id: 9
-              Desc: "פגום"
-    InsertBarcodeRequest:
-      type: object
-      properties:
-        UserID:
-          type: string
-          example: "1000028"
-        Barcode:
-          type: string
-          example: "RR11111111111"
-        BarcodeMekabets:
-          type: string
-          example: "RD000000005IL"
-        CodeReason:
-          type: integer
-          example: 1
-        Date:
-          type: string
-          format: date-time
-          example: "16/01/2025 10:43:31"
-    InsertBarcodeResponse:
-      type: object
-      properties:
-        UserID:
-          type: string
-          example: "1000028"
-        Barcode:
-          type: string
-          example: "RR11111111111"
-        CodeReason:
-          type: integer
-          example: 1
-        MoveToChatima:
-          type: boolean
-          example: true
-        IsKodMesira:
-          type: boolean
-          example: false            
+            - KodPeula: 1
+              perutPeula: 1
+              teurPeula: "נמסר לנמען"
+            - KodPeula: 1
+              perutPeula: 2
+              teurPeula: "נמסר לנציג הנמען"
+            - KodPeula: 1
+              perutPeula: 3
+              teurPeula: 'נמסר למיופ"כ מ-18'
+            - KodPeula: 1
+              perutPeula: 4
+              teurPeula: 'נמסר למיופ"כ מ-16'
+            - KodPeula: 1
+              perutPeula: 5
+              teurPeula: "נמסר חזרה לשולח"
+            - KodPeula: 1
+              perutPeula: 6
+              teurPeula: "הודבקה על הדלת"
+            - KodPeula: 1
+              perutPeula: 7
+              teurPeula: "הועבר למסירה באמצעות שליח"
+            - KodPeula: 1
+              perutPeula: 8
+              teurPeula: "נמסר לשליח GETT"
+            - KodPeula: 1
+              perutPeula: 9
+              teurPeula: "הונח בתיבה"        
+            - KodPeula: 3
+              perutPeula: 1
+              teurPeula: "לא נדרש"
+            - KodPeula: 3
+              perutPeula: 2
+              teurPeula: "סרב לקבל"
+            - KodPeula: 3
+              perutPeula: 3
+              teurPeula: "עזב"
+            - KodPeula: 3
+              perutPeula: 4
+              teurPeula: "תא דואר שגוי"
+            - KodPeula: 3
+              perutPeula: 5
+              teurPeula: "לא ידוע בתא דואר"
+            - KodPeula: 3
+              perutPeula: 6
+              teurPeula: "בבירור"
+            - KodPeula: 3
+              perutPeula: 7
+              teurPeula: "הפנייה"
+            - KodPeula: 3
+              perutPeula: 8
+              teurPeula: "ניתוב שגוי"
+            - KodPeula: 3
+              perutPeula: 9
+              teurPeula: "פגום"
+    
 security:
   - bearerAuth: []  
