@@ -14,7 +14,7 @@ servers:
     description: Local development environment (for testing only)
 
 tags:
-  - name: Login
+  - name: Users
     description: "Endpoints related to user authentication and login"
   - name: KabalatSakim
     description: "Endpoints for managing Kabalat Sakim operations"
@@ -28,7 +28,7 @@ paths:
   /users/details:
     post:
       summary: Retrieve user details
-      tags: [Login]
+      tags: [Users]
       operationId: GetUserDetails      
       requestBody:
         content:
@@ -149,6 +149,10 @@ components:
           type: integer
           example: 400
           description: The HTTP status code associated with the error (e.g., 400, 401, 403, 500).
+        ErrErrorCode:
+          type: integer
+          example: 100
+          description: The error code associated with the error (e.g., 100, 101, 102, 103).
         ErrorDescription:
           type: string
           example: "Invalid input data"
@@ -175,7 +179,7 @@ components:
     UserDetailsRequest:
       type: object
       properties:
-        userID:
+        userId:
           type: string
           example: "012345678"                
     User:
@@ -216,16 +220,16 @@ components:
         userId:
           type: string
           example: "012345678"
-        siteNumber:
-          type: string
-          example: "1000"
+        atar:
+          type: number
+          example: 100
     DeliveryStatusListResponse:
       type: object
       properties:
         userId:
           type: string
           example: "012345678"
-        DeliveryStatuses:
+        deliveryStatuses:
           type: array
           items:
             type: object
