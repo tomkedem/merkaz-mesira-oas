@@ -1,0 +1,144 @@
+openapi: 3.0.3
+info:
+  title: API providing data for merkazmesira-client-application
+  version: 1.0.0
+  description: API providing data for merkazmesira-client-application. In this version, validation and required fields of the schemas, as well as security definitions and authentication are not supported.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://post-mesira-api-dev.azurewebsites.net
+    description: API for merkazmesira-client-application (dev branch) on Azure
+  - url: http://localhost:7274
+    description: Local development environment (for testing only)
+
+tags:
+  - name: DeliveryStatus
+    description: Provide demo data for merkazmesira
+
+paths:
+  /delivery/statuses:
+    post:
+      summary: Retrieve delivery status list
+      tags: [DeliveryStatus]
+      operationId: GetDeliveryStatuses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryStatusListRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryStatusListResponse'
+              
+        
+
+components:
+  schemas:
+    DeliveryStatusListRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        siteNumber:
+          type: string
+          example: "1000"
+    DeliveryStatusListResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        DeliveryStatuses:
+          type: array
+          items:
+            type: object
+            properties:
+              kodPeula:
+                type: number
+                example: 1
+              perutPeula:
+                type: number
+                example: 1
+              teurPeula:
+                type: string
+                example: "נמסר לנמען"
+              isDelivery:
+                type: boolean  
+                example: true
+          example:
+            - kodPeula: 3
+              perutPeula: 1
+              teurPeula: "נמסר לנמען"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 8
+              teurPeula: "נמסר לנציג הנמען"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 2
+              teurPeula: "נמסר למיופ'כ מ-18"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 3
+              teurPeula: "נמסר למיופ'כ מ-16"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 7
+              teurPeula: "נמסר חזרה לשולח"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 40
+              teurPeula: "הדבקה על הדלת"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 41
+              teurPeula: "הועבר למסירה באמצעות שליח"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 61
+              teurPeula: "נמסר לשליח GETT"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 42
+              teurPeula: "הונח בתיבה"
+              isDelivery: true
+            - kodPeula: 4
+              perutPeula: 108
+              teurPeula: "לא נדרש"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 102
+              teurPeula: "סירב לקבל"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 100
+              teurPeula: "עזב"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 107
+              teurPeula: "תא דואר שגוי"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 101
+              teurPeula: "לא ידוע בתא דואר"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 111
+              teurPeula: "בבירור"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 116
+              teurPeula: "הפניה"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 120
+              teurPeula: "ניתוב שגוי"
+              isDelivery: false
+    

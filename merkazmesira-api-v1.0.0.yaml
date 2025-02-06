@@ -43,61 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDetailsResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /sakim/load:
-    post:
-      summary: Load Sakim data
-      tags: [KabalatSakim]
-      operationId: LoadSakimForHalima
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoadSakimRequest'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoadSakimResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /barcod/insert:
-    post:
-      summary: Search barcode information
-      tags: [KabalatSakim]
-      operationId: InsertBarcode
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InsertBarcodeRequest'
-      responses:
-        '201':
-          description: Barcode inserted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InsertBarcodeResponse'
+                $ref: '#/components/schemas/User'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -124,34 +70,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeliveryStatusListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /barcodes/chatima:
-    post:
-      summary: Insert barcode with signature details
-      tags: [Chatima]
-      operationId: InsertBarcodeChatima
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InsertBarcodeChatimaRequest'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InsertBarcodeChatimaResponse'
+                $ref: '#/components/schemas/DeliveryStatusListResponse'   
+              
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -183,24 +103,44 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            - StatusCode: 401
+              ErrorDescription: "Unauthorized access"
+              Details: "Authentication credentials were missing or incorrect."
+              Timestamp: "2025-01-20T14:30:00Z"   
     Forbidden:
       description: Forbidden (user lacks permissions)
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            - StatusCode: 403
+              ErrorDescription: "Access denied"
+              Details: "User does not have permission to access this resource."
+              Timestamp: "2025-03-21T14:30:00Z"  
     NotFound:
       description: Resource not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            - StatusCode: 404
+              ErrorDescription: "Resource not found"
+              Details: "The requested endpoint '/api/v1/users/12345' does not exist."
+              Timestamp: "2025-01-14T14:30:00Z"   
     InternalServerError:
       description: Internal server error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            - StatusCode: 500
+              ErrorDescription: "Internal Server Error"
+              Details: "An unexpected condition was encountered on the server."
+              Timestamp: "2025-01-11T14:30:00Z"     
   schemas:
     Error:
       type: object
@@ -209,10 +149,6 @@ components:
           type: integer
           example: 400
           description: The HTTP status code associated with the error (e.g., 400, 401, 403, 500).
-        ErrorID:
-          type: string
-          example: "E400"
-          description: Unique identifier for the error, following standard error codes.
         ErrorDescription:
           type: string
           example: "Invalid input data"
@@ -227,58 +163,68 @@ components:
           format: date-time
           example: "2025-01-29T14:30:00Z"
           description: The exact UTC time when the error occurred.
-
+    InfoError:
+      type: object
+      properties:
+        errorId:
+          type: integer
+          example: 100
+        errorDescription:
+          type: string
+          example: "להמשך הפעולה לחץ על הכפתור הירוק"      
     UserDetailsRequest:
       type: object
       properties:
-        UserID:
+        userID:
           type: string
           example: "012345678"                
-    UserDetailsResponse:
+    User:
       type: object
       properties:
-        UserDetailsResult:
-          type: object
-          properties:
-            Name:
-              type: string
-              example: "משה כהן"
-            SiteName:
-              type: string
-              example: "טסט אלף"
-            SiteNumber:
-              type: string
-              example: "1000"
-            SugAtar:
-              type: integer
-              example: 14
-            UserGroup:
-              type: string
-              example: "16"
-            UserGroupName:
-              type: string
-              example: "משתמש מרכז מסירה"
-            UserID:
-              type: string
-              example: "012345678"
-            ShouldDisplayKabalaScreen:
-              type: boolean
-              example: true
-            ShouldPrintHodaotResult:
-              type: boolean
-              example: true        
+        userId:
+          type: string
+          example: "012345678"
+        name:
+          type: string
+          example: "משה כהן"
+        atarName:
+          type: string
+          example: "טסט אלף"
+        atar:
+          type: integer
+          example: 1000
+        atarType:
+          type: integer
+          example: 14
+        userGroup:
+          type: integer
+          example: 16
+        userGroupName:
+          type: string
+          example: "משתמש מרכז מסירה"
+        shouldDisplayKabalaScreen:
+          type: boolean
+          example: true
+        shouldPrintHodaot:
+          type: boolean
+          example: true
+        infoError:
+          $ref: "#/components/schemas/InfoError"
     DeliveryStatusListRequest:
       type: object
       properties:
-        UserID:
+        userId:
           type: string
           example: "012345678"
-        SiteNumber:
+        siteNumber:
           type: string
           example: "1000"
     DeliveryStatusListResponse:
       type: object
       properties:
+        userId:
+          type: string
+          example: "012345678"
         DeliveryStatuses:
           type: array
           items:
@@ -297,60 +243,152 @@ components:
                 type: boolean  
                 example: true
           example:
-            - KodPeula: 1
+            - kodPeula: 3
               perutPeula: 1
               teurPeula: "נמסר לנמען"
-            - KodPeula: 1
-              perutPeula: 2
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 8
               teurPeula: "נמסר לנציג הנמען"
-            - KodPeula: 1
-              perutPeula: 3
-              teurPeula: 'נמסר למיופ"כ מ-18'
-            - KodPeula: 1
-              perutPeula: 4
-              teurPeula: 'נמסר למיופ"כ מ-16'
-            - KodPeula: 1
-              perutPeula: 5
-              teurPeula: "נמסר חזרה לשולח"
-            - KodPeula: 1
-              perutPeula: 6
-              teurPeula: "הודבקה על הדלת"
-            - KodPeula: 1
-              perutPeula: 7
-              teurPeula: "הועבר למסירה באמצעות שליח"
-            - KodPeula: 1
-              perutPeula: 8
-              teurPeula: "נמסר לשליח GETT"
-            - KodPeula: 1
-              perutPeula: 9
-              teurPeula: "הונח בתיבה"        
-            - KodPeula: 3
-              perutPeula: 1
-              teurPeula: "לא נדרש"
-            - KodPeula: 3
+              isDelivery: true
+            - kodPeula: 3
               perutPeula: 2
-              teurPeula: "סרב לקבל"
-            - KodPeula: 3
+              teurPeula: "נמסר למיופ'כ מ-18"
+              isDelivery: true
+            - kodPeula: 3
               perutPeula: 3
-              teurPeula: "עזב"
-            - KodPeula: 3
-              perutPeula: 4
-              teurPeula: "תא דואר שגוי"
-            - KodPeula: 3
-              perutPeula: 5
-              teurPeula: "לא ידוע בתא דואר"
-            - KodPeula: 3
-              perutPeula: 6
-              teurPeula: "בבירור"
-            - KodPeula: 3
+              teurPeula: "נמסר למיופ'כ מ-16"
+              isDelivery: true
+            - kodPeula: 3
               perutPeula: 7
-              teurPeula: "הפנייה"
-            - KodPeula: 3
-              perutPeula: 8
+              teurPeula: "נמסר חזרה לשולח"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 40
+              teurPeula: "הדבקה על הדלת"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 41
+              teurPeula: "הועבר למסירה באמצעות שליח"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 61
+              teurPeula: "נמסר לשליח GETT"
+              isDelivery: true
+            - kodPeula: 3
+              perutPeula: 42
+              teurPeula: "הונח בתיבה"
+              isDelivery: true
+            - kodPeula: 4
+              perutPeula: 108
+              teurPeula: "לא נדרש"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 102
+              teurPeula: "סירב לקבל"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 100
+              teurPeula: "עזב"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 107
+              teurPeula: "תא דואר שגוי"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 101
+              teurPeula: "לא ידוע בתא דואר"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 111
+              teurPeula: "בבירור"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 116
+              teurPeula: "הפניה"
+              isDelivery: false
+            - kodPeula: 4
+              perutPeula: 120
               teurPeula: "ניתוב שגוי"
-            - KodPeula: 3
-              perutPeula: 9
-              teurPeula: "פגום"
+              isDelivery: false
     
+
+        
+  examples:
+    DeliveryStatusExamples:
+      summary: Full list of delivery statuses
+      value:
+        - kodPeula: 3
+          perutPeula: 1
+          teurPeula: "נמסר לנמען"
+          isDelivery: true
+        - kodPeula: 3
+          perutPeula: 8
+          teurPeula: "נמסר לנציג הנמען"
+          isDelivery: true
+        - kodPeula: 3
+          perutPeula: 2
+          teurPeula: "נמסר למיופ'כ מ-18"
+          isDelivery: true
+        - kodPeula: 3
+          perutPeula: 3
+          teurPeula: "נמסר למיופ'כ מ-16"
+          isDelivery: true
+        - kodPeula: 3
+          perutPeula: 7
+          teurPeula: "נמסר חזרה לשולח"
+          isDelivery: true
+        - kodPeula: 3
+          perutPeula: 40
+          teurPeula: "הדבקה על הדלת"
+          isDelivery: true
+        - kodPeula: 3
+          perutPeula: 41
+          teurPeula: "הועבר למסירה באמצעות שליח"
+          isDelivery: true
+        - kodPeula: 3
+          perutPeula: 61
+          teurPeula: "נמסר לשליח GETT"
+          isDelivery: true
+        - kodPeula: 3
+          perutPeula: 42
+          teurPeula: "הונח בתיבה"
+          isDelivery: true
+        - kodPeula: 4
+          perutPeula: 108
+          teurPeula: "לא נדרש"
+          isDelivery: false
+        - kodPeula: 4
+          perutPeula: 102
+          teurPeula: "סירב לקבל"
+          isDelivery: false
+        - kodPeula: 4
+          perutPeula: 100
+          teurPeula: "עזב"
+          isDelivery: false
+        - kodPeula: 4
+          perutPeula: 107
+          teurPeula: "תא דואר שגוי"
+          isDelivery: false
+        - kodPeula: 4
+          perutPeula: 101
+          teurPeula: "לא ידוע בתא דואר"
+          isDelivery: false
+        - kodPeula: 4
+          perutPeula: 111
+          teurPeula: "בבירור"
+          isDelivery: false
+        - kodPeula: 4
+          perutPeula: 116
+          teurPeula: "הפניה"
+          isDelivery: false
+        - kodPeula: 4
+          perutPeula: 120
+          teurPeula: "ניתוב שגוי"
+          isDelivery: false
+        - kodPeula: 4
+          perutPeula: 175
+          teurPeula: "פגום"
+          isDelivery: false         
 security:
   - bearerAuth: []  
