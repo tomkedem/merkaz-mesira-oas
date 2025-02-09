@@ -533,7 +533,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /item/receiving:
+  /items/receiving:
     post:
       summary: InsertBarcode
       description: Insert a barcode for item receiving processing.
@@ -541,7 +541,7 @@ paths:
       tags:
         - Items
       requestBody:
-        required: true
+        required: false
         content:
           application/json:
             schema:
