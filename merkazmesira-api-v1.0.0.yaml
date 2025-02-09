@@ -10,20 +10,24 @@ info:
 servers:
   - url: https://post-mesira-api-dev.azurewebsites.net
     description: Api for merkazmesira-client-application (dev branch) on Azure
-  - url: http://localhost:7274
+  - url: https://localhost:7063/api
     description: Local development environment (for testing only)
 
 tags:
   - name: Users
     description: "Endpoints related to user authentication and login"
-  - name: KabalatSakim
-    description: "Endpoints for managing Kabalat Sakim operations"
-  - name: Chatima
-    description: "Endpoints for handling Chatima-related operations"
-  - name: DeliveryStatus
+  - name: Bags
+    description: "Handling bag reception, status updates, and data processing."
+  - name: Delivery
     description: provide demo data for merkazmesira 
-     
-  
+  - name: Signature
+    description: "Retrieve signature details by TZ."   
+  - name: NotDelivered
+    description: "Retrieve items that are not required for delivery."  
+  - name: NextDestination
+    description: "Retrieve the next destination details with sack count."
+  - name: Items
+    description: "Retrieve barcodes of notifications that need editing."
 paths:
   /users/details:
     post:
@@ -57,7 +61,7 @@ paths:
   /delivery/statuses:
     post:
       summary: Retrieve delivery status list
-      tags: [DeliveryStatus]
+      tags: [Delivery]
       operationId: GetDeliveryStatuses
       requestBody:
         content:
@@ -82,8 +86,483 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  
-          
+  /delivery/insert:
+    post:
+      summary: InsertBarcode
+      description: Endpoint to insert a delivery barcode and process its data.
+      operationId: insertBarcode
+      tags:
+        - Delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertBarcodeRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertBarcodeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /delivery/concentrated/barcodes:
+    post:
+      summary: GetMekabetzForChatimaWithBarcode
+      description: Retrieve concentrated barcode details using the provided barcode.
+      operationId: getMekabetzForChatimaWithBarcode
+      tags:
+        - Delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMekabetzForChatimaWithBarcodeRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMekabetzForChatimaWithBarcodeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /delivery/concentrated/get:
+    post:
+      summary: GetMekabetzForChatima
+      description: Retrieve concentrated barcode using user details.
+      operationId: getMekabetzForChatima
+      tags:
+        - Delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMekabetzForChatimaRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMekabetzForChatimaResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /delivery/concentrated/add:
+    post:
+      summary: DeliveryAddBarcodeToMekabetzForChatima
+      description: Add a barcode to an existing concentrated batch.
+      operationId: deliveryAddBarcodeToMekabetzForChatima
+      tags:
+        - Delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryAddBarcodeToMekabetzForChatimaRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryAddBarcodeToMekabetzForChatimaResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /delivery/check:
+    post:
+      summary: DeliveryCheckDL
+      description: Check if a delivery batch is eligible for processing.
+      operationId: deliveryCheckDL
+      tags:
+        - Delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryCheckDLRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryCheckDLResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /delivery/bydate/check:
+    post:
+      summary: DeliveryWithDateCheckBarcode
+      description: Check barcode delivery status with date.
+      operationId: deliveryWithDateCheckBarcode
+      tags:
+        - Delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryWithDateCheckBarcodeRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryWithDateCheckBarcodeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /delivery/bydate/insert:
+    post:
+      summary: InsertBarcode
+      description: Insert a barcode for delivery processing with date consideration.
+      operationId: insertBarcodeByDate
+      tags:
+        - Delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertBarcodeByDateRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertBarcodeByDateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /bags/loading:
+    post:
+      summary: LoadSakimForHalima
+      description: Endpoint to load sacks and process received data.
+      tags: [Bags]
+      operationId: loadSakimForHalima
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadSakimForHalimaRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadSakimForHalimaResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /bags/insert:
+    post:
+      summary: InsertBarcodeSak
+      description: Endpoint to insert a bag barcode and process its data.
+      operationId: insertBarcodeSak
+      tags: [Bags]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertBarcodeSakRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertBarcodeSakResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /signature/details:
+    post:
+      summary: GetDetailsByTZ
+      description: Retrieve signature details using the provided TZ.
+      operationId: getDetailsByTZ
+      tags: [Signature]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDetailsByTZRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDetailsByTZResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /signature/insert:
+    post:
+      summary: InsertBarcode
+      description: Insert barcodes into the signature handling system.
+      operationId: insertBarcodeSignature
+      tags:
+        - Signature
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertBarcodeSignatureRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertBarcodeSignatureResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /notdelivered:
+    post:
+      summary: GetNotRequiredItems
+      description: Retrieve items that are not required for delivery.
+      operationId: getNotRequiredItems
+      tags:
+        - NotDelivered
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetNotRequiredItemsRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNotRequiredItemsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /nextdest/get:
+    post:
+      summary: GetNextDestinationWithCountSakim
+      description: Retrieve the next destination details along with the count of sacks.
+      operationId: getNextDestinationWithCountSakim
+      tags:
+        - NextDestination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetNextDestinationWithCountSakimRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNextDestinationWithCountSakimResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /nextdest/insert:
+    post:
+      summary: InsertBarcode
+      description: Insert a barcode for processing at the next destination.
+      operationId: insertBarcodeNextDest
+      tags:
+        - NextDestination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertBarcodeNextDestRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertBarcodeNextDestResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /items/edit:
+    post:
+      summary: getBarcodesOfHodaot
+      description: Retrieve barcodes of notifications that need editing.
+      operationId: getBarcodesOfHodaot
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetBarcodesOfHodaotRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBarcodesOfHodaotResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /item/receiving:
+    post:
+      summary: InsertBarcode
+      description: Insert a barcode for item receiving processing.
+      operationId: insertBarcodeItemReceiving
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertBarcodeItemReceivingRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertBarcodeItemReceivingResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
@@ -315,84 +794,1281 @@ components:
               perutPeula: 120
               teurPeula: "ניתוב שגוי"
               isDelivery: false
+    LoadSakimForHalimaRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        atar:
+          type: integer
+          example: 100
+    LoadSakimForHalimaResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        arrivedList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArrivedItem"
+        receivedOkList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReceivedOkItem"
+        receivedOtherList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReceivedOtherItem"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    ArrivedItem:
+      type: object
+      properties:
+        atar:
+          type: integer
+          example: 0
+        barcode:
+          type: string
+          example: "SE20130682705"
+        color:
+          type: string
+          example: ""
+        perutPeula:
+          type: integer
+          example: 24
+        pritim:
+          type: integer
+          example: 0
+        atarName:
+          type: string
+          example: ""
+        zmanKlita:
+          type: string
+          example: ""
+    ReceivedOkItem:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RD258873736IL"
+        color:
+          type: string
+          example: "Green"
+        perutPeula:
+          type: integer
+          example: 21
+        zmanKlita:
+          type: string
+          example: "16/01/2025 10:43:31"
+    ReceivedOtherItem:
+      type: object
+      properties:
+        atar:
+          type: integer
+          example: 0
+        barcode:
+          type: string
+          example: "SE20130683205"
+        color:
+          type: string
+          example: "Red"
+        perutPeula:
+          type: integer
+          example: 24
+        received:
+          type: string
+          example: ""
+        teurPeula:
+          type: string
+          example: "שק ללא קריאה במיון"
+    InsertBarcodeSakRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1000028"
+        atar:
+          type: integer
+          example: 100
+        barcodes:
+          type: array
+          items:
+            type: string
+          example: ["RD000000005IL"]
+        barcodeMekabets:
+          type: string
+          example: ""
+        kodPeula:
+          type: integer
+          example: 85
+        perutPeula:
+          type: integer
+          example: 0
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+        nextAtar:
+          type: string
+          example: ""
+        chatimaDetails:
+          type: object
+          example: {}
+    InsertBarcodeSakResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        arrivedList:
+          type: array
+          items:
+            type: object
+          example: []
+        receivedOkList:
+          type: array
+          items:
+            type: object
+          example: []
+        receivedOtherList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReceivedOtherItem"
+        insertItem:
+          $ref: "#/components/schemas/InsertItem"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    InsertItem:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RD000000005IL"
+        barcodeMekabets:
+          type: string
+          example: ""
+        mikum:
+          type: string
+          example: ""
+        serviceDescription:
+          type: string
+          example: "שק דואר רשום RD000000005IL"
+        warringDescription:
+          type: string
+          example: ""
+    InsertBarcodeRequest:
+      type: object
+      properties:
+        pageName:
+          type: string
+          example: "Mesira"
+        userId:
+          type: integer
+          example: 1000028
+        atar:
+          type: integer
+          example: 100
+        barcodes:
+          type: array
+          items:
+            type: string
+          example: ["RR11111111111"]
+        kodPeula:
+          type: integer
+          example: 3
+        perutPeula:
+          type: integer
+          example: 1
+        check:
+          type: boolean
+          example: false
+        sug:
+          type: string
+          example: ""
+        barcodeMekabets:
+          type: string
+          example: ""
+        codeReason:
+          type: integer
+          example: 1
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+        nextAtar:
+          type: integer
+          example: 0
+        details:
+          type: object
+          example: {}
+    InsertBarcodeResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1000028"
+        barcodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/BarcodeItem"
+        perutPeula:
+          type: integer
+          example: 3
+        moveToChatima:
+          type: boolean
+          example: true
+        isKodMesira:
+          type: boolean
+          example: false
+        details:
+          $ref: "#/components/schemas/Details"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    BarcodeItem:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RR11122233355"
+        barcodeMekabets:
+          type: string
+          example: "DL000000005IL"
+        mikum:
+          type: string
+          example: "11 ר"
+        serviceDescription:
+          type: string
+          example: ""
+        warringDescription:
+          type: string
+          example: ""
+    Details:
+      type: object
+      properties:
+        kodMesira:
+          type: integer
+          example: 5424
+        chatima:
+          type: array
+          items:
+            type: string
+          example: []
+        chatimaPirsomet:
+          type: string
+          example: ""
+        davar:
+          type: integer
+          example: 0
+        fName:
+          type: string
+          example: "עמית"
+        fNameAddressee:
+          type: string
+          example: ""
+        lName:
+          type: string
+          example: "בהאשר"
+        lNameAddressee:
+          type: string
+          example: ""
+        recipientName:
+          type: string
+          example: ""
+        number:
+          type: integer
+          example: 96
+        numberAddressee:
+          type: string
+          example: ""
+        offline:
+          type: boolean
+          example: false
+        phone:
+          type: string
+          example: "0545653232"
+        pirsomet:
+          type: boolean
+          example: false
+        street:
+          type: string
+          example: ""
+        rechovFree:
+          type: string
+          example: "אלון יגאל"
+        status:
+          type: integer
+          example: 1
+        tz:
+          type: string
+          example: "207678962"
+        yishuv:
+          type: integer
+          example: 3000
+        displayStatus:
+          type: string
+          example: "נמסר לנמען"
+        code:
+          type: integer
+          example: 1    
+    GetDetailsByTZRequest:
+      type: object
+      properties:
+        tz:
+          type: string
+          example: "300103843"
+        date:
+          type: string
+          format: date-time
+          example: "1737974387275"
+    GetDetailsByTZResponse:
+      type: object
+      properties:
+        chatima:
+          type: string
+          example: "כן"
+          
+        city:
+          type: string
+          example: "3000"
+        fName:
+          type: string
+          example: "רוזנצויג"
+        lName:
+          type: string
+          example: "שירן"
+        phone:
+          type: string
+          example: "0543184831"
+        pirsomet:
+          type: boolean
+          example: false
+        street:
+          type: string
+          example: "0"
+        streetFree:
+          type: string
+          example: "נופך 5 דירה 20"
+        streetNumber:
+          type: integer
+          example: 5
+        tz:
+          type: string
+          example: "300103843"
+        infoError:
+          $ref: "#/components/schemas/InfoError"    
+    GetMekabetzForChatimaWithBarcodeRequest:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RR22222233344"
+        kodPeula:
+          type: integer
+          example: 3
+        perutPeula:
+          type: integer
+          example: 1
+        date:
+          type: string
+          format: date-time
+          example: "1738145981092"
+        userId:
+          type: string
+          example: "1001001"
+        atar:
+          type: integer
+          example: 100
+    GetMekabetzForChatimaWithBarcodeResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        barcodeMekabets:
+          type: string
+          example: "DL10045174133"
+        insertItem:
+          $ref: "#/components/schemas/InsertItem"
+        barcodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/BarcodeItem"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    GetMekabetzForChatimaRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1001001"
+        atar:
+          type: integer
+          example: 100
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+    GetMekabetzForChatimaResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        barcodeMekabets:
+          type: string
+          example: "DL10045144356"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    DeliveryAddBarcodeToMekabetzForChatimaRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1001001"
+        atar:
+          type: integer
+          example: 100
+        barcode:
+          type: string
+          example: "RR22222233344"
+        kodPeula:
+          type: integer
+          example: 3
+        perutPeula:
+          type: integer
+          example: 1
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+        barcodeMekabets:
+          type: string
+          example: "DL10045146646"
+    DeliveryAddBarcodeToMekabetzForChatimaResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        barcode:
+          type: string
+          example: "RR22222233344"
+        barcodeMekabets:
+          type: string
+          example: ""
+        mikum:
+          type: string
+          example: ""
+        serviceDescription:
+          type: string
+          example: "רשום RR22222233344"
+        warringDescription:
+          type: string
+          example: ""
+        barcodes:
+          type: array
+          items:
+            type: object
+          example: []
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    InsertBarcodeSignatureRequest:
+      type: object
+      properties:
+        pageName:
+          type: string
+          example: "LoNidreshu"
+        userId:
+          type: string
+          example: "1000028"
+        atar:
+          type: integer
+          example: 100
+        barcodes:
+          type: array
+          items:
+            type: string
+          example: ["RR11111111111", "RR11111111122"]
+        check:
+          type: boolean
+          example: false
+        sug:
+          type: string
+          example: ""
+        barcodeMekabets:
+          type: string
+          example: "DL000000005IL"
+        kodPeula:
+          type: integer
+          example: 3
+        perutPeula:
+          type: integer
+          example: 1
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+        nextAtar:
+          type: string
+          example: ""
+        details:
+          $ref: "#/components/schemas/DetailsSignature"
+    InsertBarcodeSignatureResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1000028"
+        barcodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/BarcodeItem"
+        countItems:
+          type: integer
+          example: 0
+        details:
+          $ref: "#/components/schemas/DetailsSignatureResponse"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
     
-
-        
-  examples:
-    DeliveryStatusExamples:
-      summary: Full list of delivery statuses
-      value:
-        - kodPeula: 3
-          perutPeula: 1
-          teurPeula: "נמסר לנמען"
-          isDelivery: true
-        - kodPeula: 3
-          perutPeula: 8
-          teurPeula: "נמסר לנציג הנמען"
-          isDelivery: true
-        - kodPeula: 3
-          perutPeula: 2
-          teurPeula: "נמסר למיופ'כ מ-18"
-          isDelivery: true
-        - kodPeula: 3
-          perutPeula: 3
-          teurPeula: "נמסר למיופ'כ מ-16"
-          isDelivery: true
-        - kodPeula: 3
-          perutPeula: 7
-          teurPeula: "נמסר חזרה לשולח"
-          isDelivery: true
-        - kodPeula: 3
-          perutPeula: 40
-          teurPeula: "הדבקה על הדלת"
-          isDelivery: true
-        - kodPeula: 3
-          perutPeula: 41
-          teurPeula: "הועבר למסירה באמצעות שליח"
-          isDelivery: true
-        - kodPeula: 3
-          perutPeula: 61
-          teurPeula: "נמסר לשליח GETT"
-          isDelivery: true
-        - kodPeula: 3
-          perutPeula: 42
-          teurPeula: "הונח בתיבה"
-          isDelivery: true
-        - kodPeula: 4
-          perutPeula: 108
-          teurPeula: "לא נדרש"
-          isDelivery: false
-        - kodPeula: 4
-          perutPeula: 102
-          teurPeula: "סירב לקבל"
-          isDelivery: false
-        - kodPeula: 4
-          perutPeula: 100
-          teurPeula: "עזב"
-          isDelivery: false
-        - kodPeula: 4
-          perutPeula: 107
-          teurPeula: "תא דואר שגוי"
-          isDelivery: false
-        - kodPeula: 4
-          perutPeula: 101
-          teurPeula: "לא ידוע בתא דואר"
-          isDelivery: false
-        - kodPeula: 4
-          perutPeula: 111
-          teurPeula: "בבירור"
-          isDelivery: false
-        - kodPeula: 4
-          perutPeula: 116
-          teurPeula: "הפניה"
-          isDelivery: false
-        - kodPeula: 4
-          perutPeula: 120
-          teurPeula: "ניתוב שגוי"
-          isDelivery: false
-        - kodPeula: 4
-          perutPeula: 175
-          teurPeula: "פגום"
-          isDelivery: false         
+    DetailsSignature:
+      type: object
+      properties:
+        kodMesira:
+          type: integer
+          example: 1234
+        chatima:
+          type: array
+          items:
+            type: string
+          example: []
+        chatimaPirsomet:
+          type: string
+          example: ""
+        davar:
+          type: integer
+          example: 0
+        fName:
+          type: string
+          example: "עמית"
+        fNameAddressee:
+          type: string
+          example: ""
+        lName:
+          type: string
+          example: "בהאשר"
+        lNameAddressee:
+          type: string
+          example: ""
+        recipientName:
+          type: string
+          example: ""
+        number:
+          type: integer
+          example: 96
+        numberAddressee:
+          type: integer
+          example: 0
+        offline:
+          type: boolean
+          example: false
+        phone:
+          type: string
+          example: "0545653232"
+        pirsomet:
+          type: boolean
+          example: false
+        street:
+          type: string
+          example: ""
+        streetFree:
+          type: string
+          example: "אלון יגאל"
+        status:
+          type: integer
+          example: 1
+        tz:
+          type: string
+          example: "207678962"
+        yishuv:
+          type: integer
+          example: 3000
+        displayStatus:
+          type: string
+          example: "נמסר לנמען"
+        code:
+          type: integer
+          example: 1
+    DetailsSignatureResponse:
+      type: object
+      properties:
+        kodMesira:
+          type: integer
+          example: 1234
+        addressNiman:
+          type: string
+          example: ""
+        chatima:
+          type: string
+          example: ""
+        chatimaPirsomet:
+          type: string
+          example: ""
+        davar:
+          type: integer
+          example: 0
+        fName:
+          type: string
+          example: "Tomer"
+        fNameAddressee:
+          type: string
+          example: ""
+        lName:
+          type: string
+          example: "Lu"
+        lNameAddressee:
+          type: string
+          example: ""
+        recipientName:
+          type: string
+          example: ""
+        number:
+          type: integer
+          example: 94
+        numberAddressee:
+          type: integer
+          example: 0
+        offline:
+          type: boolean
+          example: false
+        phone:
+          type: string
+          example: "0509555660"
+        pirsomet:
+          type: boolean
+          example: false
+        street:
+          type: string
+          example: ""
+        streetFree:
+          type: string
+          example: "אלון יגאל"
+        status:
+          type: integer
+          example: 0
+        tz:
+          type: string
+          example: ""
+        yishuv:
+          type: integer
+          example: 3000
+    GetNotRequiredItemsRequest:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          example: "1737975028701"
+        userId:
+          type: string
+          example: "1001001"
+        atar:
+          type: integer
+          example: 100
+    GetNotRequiredItemsResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/NotRequiredItem"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    NotRequiredItem:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RR7777777773X"
+        days:
+          type: integer
+          example: 15
+        hasContent:
+          type: string
+          example: ""
+        id:
+          type: integer
+          example: 0
+        info:
+          type: string
+          example: "דוורים"
+        kvutzatSherut:
+          type: string
+          example: "רשומים"
+        lastAction:
+          type: string
+          example: "הגעה ליחידה"
+        lastDate:
+          type: string
+          format: date-time
+          example: "2025-01-07T15:36:49+02:00"
+        location:
+          type: string
+          example: "1 ר"
+        name:
+          type: string
+          example: ""
+        number:
+          type: integer
+          example: 0
+        phone:
+          type: string
+          example: ""
+        sortDate:
+          type: string
+          format: date-time
+          example: "2025-01-07T15:36:49+02:00"
+        status:
+          type: boolean
+          example: false
+        sugSherut:
+          type: string
+          example: "רשום"
+    DeliveryCheckDLRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1001001"
+        atar:
+          type: integer
+          example: 100
+        code:
+          type: integer
+          example: 1
+        date:
+          type: string
+          format: date-time
+          example: "1738227888718"
+        barcodeMekabets:
+          type: string
+          example: "DL10045188664"
+        barcodes:
+          type: array
+          items:
+            type: string
+          example: ["RR11111111111", "RR11111111122"]
+    DeliveryCheckDLResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        barcods:
+          type: array
+          items:
+            $ref: "#/components/schemas/BarcodeError"
+        chatimaDetails:
+          $ref: "#/components/schemas/ChatimaDetails"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    BarcodeError:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RR11111111111"
+        errorCode:
+          type: string
+          example: "1"
+        errorDescription:
+          type: string
+          example: "הפריט חייב בתשלום. לא ניתן למסור במסירה מרוכזת. כדי להמשיך במסירה המרוכזת יש להסיר את הפריט מהרשימה"
+    ChatimaDetails:
+      type: object
+      properties:
+        addressNiman:
+          type: string
+          example: ""
+        barcode:
+          type: string
+          example: "DL10045143618"
+        chatima:
+          type: string
+          example: ""
+        chatimaPirsomet:
+          type: string
+          example: ""
+        davar:
+          type: integer
+          example: 0
+        fName:
+          type: string
+          example: "רוזנצויג"
+        fNameNiman:
+          type: string
+          example: ""
+        lName:
+          type: string
+          example: "שירן"
+        lNameNiman:
+          type: string
+          example: ""
+        mekabelName:
+          type: string
+          example: ""
+        number:
+          type: integer
+          example: 0
+        numberNiman:
+          type: integer
+          example: 0
+        offline:
+          type: boolean
+          example: false
+        phone:
+          type: string
+          example: "0543184831"
+        pirsomet:
+          type: boolean
+          example: false
+        strret:
+          type: string
+          example: ""
+        streetFree:
+          type: string
+          example: "נופך 5 דירה 20"
+        status:
+          type: integer
+          example: 0
+        tz:
+          type: string
+          example: "300107843"
+        yishuv:
+          type: string
+          example: "2530"
+    DeliveryWithDateCheckBarcodeRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1001001"
+        atar:
+          type: integer
+          example: 100
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+        barcode:
+          type: string
+          example: "RR22222233344"
+        kodPeula:
+          type: integer
+          example: 3
+        perutPeula:
+          type: integer
+          example: 1
+    DeliveryWithDateCheckBarcodeResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        barcode:
+          type: string
+          example: "RR22222233344"
+        barcodeMekabets:
+          type: string
+          example: ""
+        mikum:
+          type: string
+          example: ""
+        serviceDescription:
+          type: string
+          example: "רשום RR22222233344"
+        warringDescription:
+          type: string
+          example: ""
+        codeMesira:
+          type: integer
+          example: 24
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    InsertBarcodeByDateRequest:
+      type: object
+      properties:
+        pageName:
+          type: string
+          example: "MesiraWithDate"
+        userId:
+          type: string
+          example: "1000028"
+        atar:
+          type: integer
+          example: 100
+        barcodes:
+          type: array
+          items:
+            type: string
+          example: ["RR11111111111"]
+        check:
+          type: boolean
+          example: false
+        sug:
+          type: string
+          example: ""
+        barcodeMekabets:
+          type: string
+          example: ""
+        codeReason:
+          type: integer
+          example: 1
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+        nextAtar:
+          type: integer
+          example: 6500
+        details:
+          type: object
+          example: {}
+    InsertBarcodeByDateResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        barcode:
+          type: string
+          example: "RR11111111111"
+        barcodeMekabets:
+          type: string
+          example: ""
+        mikum:
+          type: string
+          example: ""
+        serviceDescription:
+          type: string
+          example: "רשום RR11111111111"
+        warringDescription:
+          type: string
+          example: ""
+        barcodes:
+          type: array
+          items:
+            type: object
+          example: []
+        countItems:
+          type: integer
+          example: 0
+        details:
+          type: object
+          example: {}
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    GetNextDestinationWithCountSakimRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1001001"
+        atar:
+          type: integer
+          example: 100
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+    GetNextDestinationWithCountSakimResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        locations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Location"
+        countItems:
+          type: integer
+          example: 0
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    Location:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 6500
+        desc:
+          type: string
+          example: "מרכז המיון במודיעין"
+        type:
+          type: integer
+          example: 60
+    InsertBarcodeNextDestRequest:
+      type: object
+      properties:
+        pageName:
+          type: string
+          example: "YaadHaba"
+        userId:
+          type: string
+          example: "1000028"
+        atar:
+          type: integer
+          example: 100
+        barcodes:
+          type: array
+          items:
+            type: string
+          example: ["RR11111111111"]
+        check:
+          type: boolean
+          example: false
+        sug:
+          type: string
+          example: ""
+        barcodeMekabets:
+          type: string
+          example: ""
+        kodPeula:
+          type: integer
+          example: 2
+        perutPeula:
+          type: integer
+          example: 0
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+        nextAtar:
+          type: integer
+          example: 6500
+        details:
+          type: object
+          example: {}
+    InsertBarcodeNextDestResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1000028"
+        barcodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/BarcodeItem"
+        countItems:
+          type: integer
+          example: 0
+        details:
+          type: object
+          example: {}
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    GetBarcodesOfHodaotRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1000028"
+        atar:
+          type: integer
+          example: 100
+    GetBarcodesOfHodaotResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        barcodesOfHodaot:
+          type: array
+          items:
+            $ref: "#/components/schemas/BarcodeHodaot"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    BarcodeHodaot:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RS1171931286Y"
+        miduf:
+          type: string
+          example: "ג8101"
+        misparBayit:
+          type: string
+          example: "א23"
+        phone:
+          type: string
+          example: "0587004663"
+        rechov:
+          type: string
+          example: "Holon Ekhad be-Mai Street 9/11"
+        shemMishpacha:
+          type: string
+          example: "Oxana"
+        shemNiman:
+          type: string
+          example: ""
+        shemPrati:
+          type: string
+          example: "Shutova"
+        yeshuv:
+          type: string
+          example: ""
+        zman:
+          type: string
+          format: date-time
+          example: "30/01/2025 10:24:17"
+    InsertBarcodeItemReceivingRequest:
+      type: object
+      properties:
+        pageName:
+          type: string
+          example: "KabalatParit"
+        userId:
+          type: string
+          example: "1000028"
+        atar:
+          type: integer
+          example: 100
+        barcodes:
+          type: array
+          items:
+            type: string
+          example: ["RR11111111111"]
+        check:
+          type: boolean
+          example: false
+        sug:
+          type: integer
+          example: 1
+        barcodeMekabets:
+          type: string
+          example: ""
+        kodPeula:
+          type: integer
+          example: 3
+        perutPeula:
+          type: integer
+          example: 1
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+        nextAtar:
+          type: integer
+          example: 6500
+        details:
+          type: object
+          example: {}
+    InsertBarcodeItemReceivingResponse:
+      type: object
+      properties:
+        userID:
+          type: string
+          example: "1000028"
+        barcodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/BarcodeItemReceiving"
+        countItems:
+          type: integer
+          example: 0
+        details:
+          $ref: "#/components/schemas/DetailsItemReceiving"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    BarcodeItemReceiving:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RR11111111111"
+        barcodeMekabets:
+          type: string
+          example: ""
+        mikum:
+          type: string
+          example: "ג1"
+        serviceDescription:
+          type: string
+          example: ""
+        warringDescription:
+          type: string
+          example: ""
+    DetailsItemReceiving:
+      type: object
+      properties:
+        addressNiman:
+          type: string
+          example: ""
+        barcode:
+          type: string
+          example: ""
+        chatima:
+          type: string
+          nullable: true
+          example: null
+        chatimaPirsomet:
+          type: string
+          example: ""
+        davar:
+          type: integer
+          example: 0
+        fName:
+          type: string
+          example: "רוזנצויג"
+        fNameNiman:
+          type: string
+          example: ""
+        lName:
+          type: string
+          example: "שירן"
+        lNameNiman:
+          type: string
+          example: ""
+        mekabelName:
+          type: string
+          example: ""
+        number:
+          type: string
+          example: ""
+        numberNiman:
+          type: string
+          example: ""
+        offline:
+          type: boolean
+          example: false
+        phone:
+          type: string
+          example: "0543184831"
+        pirsomet:
+          type: boolean
+          example: false
+        street:
+          type: string
+          example: ""
+        streetFree:
+          type: string
+          example: "נופך 5 דירה 20"
+        status:
+          type: integer
+          example: 0
+        tz:
+          type: string
+          example: "300107843"
+        yishuv:
+          type: string
+          example: "2530"
+    
 security:
   - bearerAuth: []  
