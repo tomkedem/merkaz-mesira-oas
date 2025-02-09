@@ -1,14 +1,14 @@
 openapi: 3.0.1
 info:
   title: API providing data for merkazmesira-client-application
-  version: 1.0.0
+  version: 1.1.0
   description: API providing data for merkazmesira-client-application. In this version, validation and required fields of the schemas, as well as securityDefenition and authentication are not supported.
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://post-mesira-api-dev.azurewebsites.net
+  - url: https://api-merkazimesira-tst-hkd3adaxb3etgsev.westeurope-01.azurewebsites.net/api
     description: Api for merkazmesira-client-application (dev branch) on Azure
   - url: https://localhost:7063/api
     description: Local development environment (for testing only)
