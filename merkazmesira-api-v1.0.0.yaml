@@ -883,6 +883,9 @@ components:
         teurPeula:
           type: string
           example: "שק ללא קריאה במיון"
+        slaDateTime:
+          type: string
+          example: "16/01/2025 10:43:31"          
     InsertBarcodeSakRequest:
       type: object
       properties:
