@@ -563,6 +563,36 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /items/edit/addressee:
+    post:
+      summary: עדכון פרטי נמענים
+      description: עדכון פרטי נמענים עם מזהה משתמש, מיקום ופרטי התקשרות
+      operationId: updateAddressee
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddresseeRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddresseeResponse"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
@@ -2072,6 +2102,43 @@ components:
         yishuv:
           type: string
           example: "2530"
-    
+    AddresseeRequest:
+        type: object
+        properties:
+          userId:
+            type: integer
+            example: 1000028
+          atar:
+            type: integer
+            example: 100
+          dateTime:
+            type: string
+            format: date-time
+            example: "16/01/2025 10:43:31"
+          barcode:
+            type: string
+            example: "RS1171931286Y"
+          shemNiman:
+            type: string
+            example: "Oxana Shutova"
+          misparBayit:
+            type: string
+            example: "."
+          yeshuv:
+            type: string
+            example: "חולון"
+          rechov:
+            type: string
+            example: "Holon Ekhad be-Mai Street 9/11"
+          phone:
+            type: string
+            example: "0587004663"
+
+    AddresseeResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"  
 security:
   - bearerAuth: []  
