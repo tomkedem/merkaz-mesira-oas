@@ -298,10 +298,10 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /bags/loading:
     post:
-      summary: LoadSakimForHalima
-      description: Endpoint to load sacks and process received data.
+      summary: Load bags for Halima
+      description: Receives user ID and atar ID to return processed bags.
       tags: [Bags]
-      operationId: loadSakimForHalima
+      operationId: LoadBagAsync
       requestBody:
         required: true
         content:
@@ -310,7 +310,7 @@ paths:
               $ref: '#/components/schemas/LoadSakimForHalimaRequest'
       responses:
         "200":
-          description: OK
+          description: Success - Returns the processed bag lists.
           content:
             application/json:
               schema:
@@ -616,7 +616,7 @@ components:
             - StatusCode: 401
               ErrorDescription: "Unauthorized access"
               Details: "Authentication credentials were missing or incorrect."
-              Timestamp: "2025-01-20T14:30:00Z"   
+              Timestamp: "16/01/2025 10:43:31"   
     Forbidden:
       description: Forbidden (user lacks permissions)
       content:
@@ -627,7 +627,7 @@ components:
             - StatusCode: 403
               ErrorDescription: "Access denied"
               Details: "User does not have permission to access this resource."
-              Timestamp: "2025-03-21T14:30:00Z"  
+              Timestamp: "16/01/2025 10:43:31"  
     NotFound:
       description: Resource not found
       content:
@@ -638,7 +638,7 @@ components:
             - StatusCode: 404
               ErrorDescription: "Resource not found"
               Details: "The requested endpoint '/api/v1/users/12345' does not exist."
-              Timestamp: "2025-01-14T14:30:00Z"   
+              Timestamp: "16/01/2025 10:43:31"   
     InternalServerError:
       description: Internal server error
       content:
@@ -649,7 +649,7 @@ components:
             - StatusCode: 500
               ErrorDescription: "Internal Server Error"
               Details: "An unexpected condition was encountered on the server."
-              Timestamp: "2025-01-11T14:30:00Z"     
+              Timestamp: "16/01/2025 10:43:31"     
   schemas:
     Error:
       type: object
@@ -674,7 +674,7 @@ components:
         Timestamp:
           type: string
           format: date-time
-          example: "2025-01-29T14:30:00Z"
+          example: "16/01/2025 10:43:31"
           description: The exact UTC time when the error occurred.
     InfoError:
       type: object
@@ -706,9 +706,6 @@ components:
         atar:
           type: integer
           example: 1000
-        atarType:
-          type: integer
-          example: 14
         userGroup:
           type: integer
           example: 16
@@ -833,6 +830,9 @@ components:
         atar:
           type: integer
           example: 100
+      required:
+        - userId
+        - atar
     LoadSakimForHalimaResponse:
       type: object
       properties:
@@ -856,9 +856,6 @@ components:
     ArrivedItem:
       type: object
       properties:
-        atar:
-          type: integer
-          example: 0
         barcode:
           type: string
           example: "SE20130682705"
@@ -873,10 +870,11 @@ components:
           example: 0
         atarName:
           type: string
-          example: ""
+          example: "טסט אלף"
         zmanKlita:
           type: string
-          example: ""
+          format: date-time
+          example: "16/01/2025 10:43:31"
     ReceivedOkItem:
       type: object
       properties:
@@ -891,13 +889,14 @@ components:
           example: 21
         zmanKlita:
           type: string
+          format: date-time
           example: "16/01/2025 10:43:31"
     ReceivedOtherItem:
       type: object
       properties:
         atar:
           type: integer
-          example: 0
+          example: 100
         barcode:
           type: string
           example: "SE20130683205"
@@ -907,14 +906,12 @@ components:
         perutPeula:
           type: integer
           example: 24
-        received:
-          type: string
-          example: ""
         teurPeula:
           type: string
           example: "שק ללא קריאה במיון"
         slaDateTime:
           type: string
+          format: date-time
           example: "16/01/2025 10:43:31"          
     InsertBarcodeSakRequest:
       type: object
@@ -925,14 +922,9 @@ components:
         atar:
           type: integer
           example: 100
-        barcodes:
-          type: array
-          items:
-            type: string
-          example: ["RD000000005IL"]
-        barcodeMekabets:
+        barcode:
           type: string
-          example: ""
+          example: "RR22222233344"
         kodPeula:
           type: integer
           example: 85
@@ -942,13 +934,7 @@ components:
         dateTime:
           type: string
           format: date-time
-          example: "16/01/2025 10:43:31"
-        nextAtar:
-          type: string
-          example: ""
-        chatimaDetails:
-          type: object
-          example: {}
+          example: "16/01/2025 10:43:31"        
     InsertBarcodeSakResponse:
       type: object
       properties:
@@ -1549,7 +1535,7 @@ components:
         lastDate:
           type: string
           format: date-time
-          example: "2025-01-07T15:36:49+02:00"
+          example: "16/01/2025 10:43:31"
         location:
           type: string
           example: "1 ר"
@@ -1565,7 +1551,7 @@ components:
         sortDate:
           type: string
           format: date-time
-          example: "2025-01-07T15:36:49+02:00"
+          example: "16/01/2025 10:43:31"
         status:
           type: boolean
           example: false
@@ -2006,7 +1992,7 @@ components:
     InsertBarcodeItemReceivingResponse:
       type: object
       properties:
-        userID:
+        userId:
           type: string
           example: "1000028"
         barcodes:
