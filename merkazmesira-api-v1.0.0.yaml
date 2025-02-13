@@ -861,20 +861,7 @@ components:
           example: "SE20130682705"
         color:
           type: string
-          example: ""
-        perutPeula:
-          type: integer
-          example: 24
-        pritim:
-          type: integer
-          example: 0
-        atarName:
-          type: string
-          example: "טסט אלף"
-        zmanKlita:
-          type: string
-          format: date-time
-          example: "16/01/2025 10:43:31"
+          example: ""        
     ReceivedOkItem:
       type: object
       properties:
@@ -894,9 +881,9 @@ components:
     ReceivedOtherItem:
       type: object
       properties:
-        atar:
-          type: integer
-          example: 100
+        atarName:
+          type: string
+          example: "מרכז מסירה מיון מודיעין"
         barcode:
           type: string
           example: "SE20130683205"
@@ -905,7 +892,7 @@ components:
           example: "Red"
         perutPeula:
           type: integer
-          example: 24
+          example: 28
         teurPeula:
           type: string
           example: "שק ללא קריאה במיון"
@@ -924,7 +911,7 @@ components:
           example: 100
         barcode:
           type: string
-          example: "RR22222233344"
+          example: "RD000000005IL"
         kodPeula:
           type: integer
           example: 85
@@ -965,18 +952,9 @@ components:
         barcode:
           type: string
           example: "RD000000005IL"
-        barcodeMekabets:
-          type: string
-          example: ""
-        mikum:
-          type: string
-          example: ""
         serviceDescription:
           type: string
-          example: "שק דואר רשום RD000000005IL"
-        warringDescription:
-          type: string
-          example: ""
+          example: "שק דואר רשום RD000000005IL"        
     InsertBarcodeRequest:
       type: object
       properties:
