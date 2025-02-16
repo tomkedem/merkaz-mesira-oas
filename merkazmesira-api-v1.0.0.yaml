@@ -1115,17 +1115,13 @@ components:
         tz:
           type: string
           example: "300103843"
-        date:
+        dateTime:
           type: string
           format: date-time
-          example: "1737974387275"
+          example: "16/01/2025 10:43:31"
     GetDetailsByTZResponse:
       type: object
       properties:
-        chatima:
-          type: string
-          example: "כן"
-          
         city:
           type: string
           example: "3000"
