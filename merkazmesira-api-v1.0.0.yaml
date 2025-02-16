@@ -443,6 +443,36 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /notdelivered/insert:
+    post:
+      summary: Insert barcode for reading bag.
+      description: Insert barcode for reading bag.
+      operationId: insertBarcode
+      tags:
+        - NotDelivered
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertBarcodeRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notdeliveredInsertBarcodeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /nextdest/get:
     post:
       summary: GetNextDestinationWithCountSakim
@@ -2090,7 +2120,7 @@ components:
           yeshuv:
             type: string
             example: "חולון"
-          rechov:
+          street:
             type: string
             example: "Holon Ekhad be-Mai Street 9/11"
           phone:
@@ -2103,5 +2133,29 @@ components:
         userId:
           type: string
           example: "012345678"  
+        infoError:
+          $ref: "#/components/schemas/InfoError"  
+    NotdeliveredInsertBarcodeResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1000028"
+        barcodeItem:
+          type: array
+          items:
+            $ref: "#/components/schemas/BarcodeItem"
+        barcodes:
+          type: array
+          items:
+            type: string
+          example: ["RR11111111111"]
+        countItems:
+          type: integer
+          example: 0
+        details:
+          $ref: "#/components/schemas/Details"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
 security:
   - bearerAuth: []  
