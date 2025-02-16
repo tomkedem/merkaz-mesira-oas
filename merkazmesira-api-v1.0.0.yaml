@@ -1716,9 +1716,15 @@ components:
         barcodeMekabets:
           type: string
           example: ""
-        codeReason:
+        barcodeHodaa:
+          type: string
+          example: ""  
+        kodPeula:
           type: integer
-          example: 1
+          example: 3
+        perutPeula:
+          type: integer
+          example: 1  
         dateTime:
           type: string
           format: date-time
@@ -1747,9 +1753,6 @@ components:
         serviceDescription:
           type: string
           example: "רשום RR11111111111"
-        warringDescription:
-          type: string
-          example: ""
         barcodes:
           type: array
           items:
