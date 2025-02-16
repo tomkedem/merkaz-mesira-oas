@@ -1460,16 +1460,16 @@ components:
     GetNotRequiredItemsRequest:
       type: object
       properties:
-        date:
-          type: string
-          format: date-time
-          example: "1737975028701"
         userId:
           type: string
           example: "1001001"
         atar:
           type: integer
           example: 100
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"      
     GetNotRequiredItemsResponse:
       type: object
       properties:
@@ -1544,10 +1544,10 @@ components:
         code:
           type: integer
           example: 1
-        date:
+        dateTime:
           type: string
           format: date-time
-          example: "1738227888718"
+          example: "16/01/2025 10:43:31"      
         barcodeMekabets:
           type: string
           example: "DL10045188664"
