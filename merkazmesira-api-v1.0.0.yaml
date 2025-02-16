@@ -1106,7 +1106,7 @@ components:
         street:
           type: string
           example: ""
-        rechovFree:
+        streetFree:
           type: string
           example: "אלון יגאל"
         status:
@@ -1872,7 +1872,7 @@ components:
         userId:
           type: string
           example: "1000028"
-        barcodes:
+        barcodeItem:
           type: array
           items:
             $ref: "#/components/schemas/BarcodeItem"
@@ -1920,7 +1920,7 @@ components:
         phone:
           type: string
           example: "0587004663"
-        rechov:
+        street:
           type: string
           example: "Holon Ekhad be-Mai Street 9/11"
         shemMishpacha:
