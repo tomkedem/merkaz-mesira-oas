@@ -682,6 +682,36 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /items/reciving/for:
+    post:
+      summary: InsertBarcodeKabala
+      description: Insert a barcode for receiving processing.
+      operationId: InsertBarcodeKabala
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertBarcodeKabalaRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InsertBarcodeKabalaResponse"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
@@ -2279,5 +2309,39 @@ components:
           example: "0528746060"
         infoError:
           $ref: "#/components/schemas/InfoError"      
+    InsertBarcodeKabalaRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1001001"
+        atar:
+          type: integer
+          example: 100
+        kodPeula:
+          type: integer
+          example: 5
+        perutPeula:
+          type: integer
+          example: 0
+        barcode:
+          type: string
+          example: "RR22222233344"
+        sak:
+          type: string
+          example: "RD01000000103"
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+
+    InsertBarcodeKabalaResponse:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RR22222233344"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
 security:
   - bearerAuth: []  
