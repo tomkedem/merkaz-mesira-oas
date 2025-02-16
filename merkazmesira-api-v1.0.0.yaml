@@ -946,6 +946,21 @@ components:
           $ref: "#/components/schemas/InsertItem"
         infoError:
           $ref: "#/components/schemas/InfoError"
+    InsertItemBarcode:
+      type: object
+      properties:
+        barcode:
+          type: string
+          example: "RD000000005IL"
+        barcodeMekabets:
+          type: string
+          example: ""  
+        mikum:
+          type: string
+          example: "11 ר"
+        serviceDescription:
+          type: string
+          example: "שק דואר רשום RD000000005IL"   
     InsertItem:
       type: object
       properties:
@@ -1163,10 +1178,10 @@ components:
         perutPeula:
           type: integer
           example: 1
-        date:
+        dateTime:
           type: string
           format: date-time
-          example: "1738145981092"
+          example: "16/01/2025 10:43:31"
         userId:
           type: string
           example: "1001001"
@@ -1182,7 +1197,7 @@ components:
         barcodeMekabets:
           type: string
           example: "DL10045174133"
-        insertItem:
+        insertItemBarcode:
           $ref: "#/components/schemas/InsertItem"
         barcodes:
           type: array
