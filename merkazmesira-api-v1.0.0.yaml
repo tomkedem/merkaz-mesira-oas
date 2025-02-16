@@ -1305,6 +1305,9 @@ components:
         barcodeMekabets:
           type: string
           example: "DL000000005IL"
+        barcodeHodaa:
+          type: string
+          example: "DL000000005IL"
         kodPeula:
           type: integer
           example: 3
@@ -1316,8 +1319,7 @@ components:
           format: date-time
           example: "16/01/2025 10:43:31"
         nextAtar:
-          type: string
-          example: ""
+          type: integer
         details:
           $ref: "#/components/schemas/DetailsSignature"
     InsertBarcodeSignatureResponse:
@@ -1326,7 +1328,7 @@ components:
         userId:
           type: string
           example: "1000028"
-        barcodes:
+        barcodeItem:
           type: array
           items:
             $ref: "#/components/schemas/BarcodeItem"
