@@ -1847,6 +1847,9 @@ components:
         barcodeMekabets:
           type: string
           example: ""
+        barcodeHodaa:
+          type: string
+          example: ""  
         kodPeula:
           type: integer
           example: 2
