@@ -651,6 +651,36 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
+            $ref: '#/components/responses/InternalServerError'
+  /items/edit/phone:
+    post:
+      summary: עדכון טלפון 
+      description: עדכון פרטי נמענים עם מזהה משתמש, מיקום ופרטי התקשרות
+      operationId: UpdatePhoneNumber
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePhoneRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePhoneResponse"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
           $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
@@ -2207,10 +2237,11 @@ components:
       properties:
         barcodeItem:
           $ref: "#/components/schemas/BarcodeItem"
-        arrivedList:
+        barcodes:
           type: array
           items:
-            $ref: "#/components/schemas/ArrivedItem"
+            type: string
+          example: ["RR11111111111"]
         receivedOkList:
           type: array
           items:
@@ -2221,5 +2252,32 @@ components:
             $ref: "#/components/schemas/ReceivedOtherItem"
         infoError:
           $ref: "#/components/schemas/InfoError"
+    UpdatePhoneRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        atar:
+          type: integer
+          example: 100
+        barcode:
+          type: string
+          example: "SE20130682705"  
+        phoneNumber:
+          type: string
+          example: "0528746060"
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+    UpdatePhoneResponse:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          example: "0528746060"
+        infoError:
+          $ref: "#/components/schemas/InfoError"      
 security:
   - bearerAuth: []  
