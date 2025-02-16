@@ -9,9 +9,7 @@ info:
 
 servers:
   - url: https://api-merkazimesira-tst-hkd3adaxb3etgsev.westeurope-01.azurewebsites.net/api
-    description: Api for merkazmesira-client-application (dev branch) on Azure
-  - url: https://localhost:7063/api
-    description: Local development environment (for testing only)
+    description: Api for merkazmesira-client-application (dev branch) on Azure  
 
 tags:
   - name: Users
