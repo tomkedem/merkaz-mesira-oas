@@ -1685,9 +1685,6 @@ components:
         serviceDescription:
           type: string
           example: "רשום RR22222233344"
-        warringDescription:
-          type: string
-          example: ""
         codeMesira:
           type: integer
           example: 24
