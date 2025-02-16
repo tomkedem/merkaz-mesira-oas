@@ -354,6 +354,35 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /bags/halima:
+    post:
+      summary: Get bags for Halima
+      description: Receives user ID and atar ID to return processed bags.
+      tags: [Bags]
+      operationId: LoadBagForHalimaAsync
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BagForHalimaRequest'
+      responses:
+        '200':
+          description: Success - Returns the processed bag lists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BagForHalimaResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /signature/details:
     post:
       summary: GetDetailsByTZ
@@ -447,7 +476,7 @@ paths:
     post:
       summary: Insert barcode for reading bag.
       description: Insert barcode for reading bag.
-      operationId: insertBarcode
+      operationId: insertBarcodeNotdelivered
       tags:
         - NotDelivered
       requestBody:
@@ -462,7 +491,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/notdeliveredInsertBarcodeResponse'
+                $ref: '#/components/schemas/NotdeliveredInsertBarcodeResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -2099,8 +2128,8 @@ components:
         type: object
         properties:
           userId:
-            type: integer
-            example: 1000028
+            type: string
+            example: "012345678"  
           atar:
             type: integer
             example: 100
@@ -2155,6 +2184,41 @@ components:
           example: 0
         details:
           $ref: "#/components/schemas/Details"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+    BagForHalimaRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "012345678"
+        atar:
+          type: integer
+          example: 100
+        barcode:
+          type: string
+          example: "RD000000005IL"
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"        
+    BagForHalimaResponse:
+      type: object
+      properties:
+        barcodeItem:
+          $ref: "#/components/schemas/BarcodeItem"
+        arrivedList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArrivedItem"
+        receivedOkList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReceivedOkItem"
+        receivedOtherList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReceivedOtherItem"
         infoError:
           $ref: "#/components/schemas/InfoError"
 security:
