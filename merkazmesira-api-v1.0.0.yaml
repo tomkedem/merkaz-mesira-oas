@@ -383,6 +383,26 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /bags/halima/insert:
+    post:
+      summary: InsertBarcodeHalimatSak
+      description: Insert a barcode for receiving and processing bags.
+      operationId: InsertBarcodeHalimatSak
+      tags:
+        - Bags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertBarcodeHalimatSakRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InsertBarcodeHalimatSakResponse"
   /signature/details:
     post:
       summary: GetDetailsByTZ
@@ -2343,5 +2363,88 @@ components:
           example: "RR22222233344"
         infoError:
           $ref: "#/components/schemas/InfoError"
+    InsertBarcodeHalimatSakRequest:
+      type: object
+      properties:
+        userID:
+          type: string
+          example: "1001001"
+        atar:
+          type: integer
+          example: 100
+        barcode:
+          type: string
+          example: "RR11133355577"
+        dateTime:
+          type: string
+          format: date-time
+          example: "16/01/2025 10:43:31"
+        barcodeHodaa:
+          type: string
+          example: ""
+        checkParam:
+          type: boolean
+          example: true
+        sak:
+          type: string
+          example: "RD01000000103"
+        sug:
+          type: integer
+          example: 1
+
+    InsertBarcodeHalimatSakResponse:
+      type: object
+      properties:
+        barcodeItem:
+          type: object
+          properties:
+            barcode:
+              type: string
+              example: "RR11111111111"
+            barcodeMekabets:
+              type: string
+              example: "RD22233344444"
+            mikum:
+              type: string
+              example: ""
+            serviceDescription:
+              type: string
+              example: "רשום RR11111111111"
+        phoneNumber:
+          type: string
+          example: ""
+        barcodeHodaaOut:
+          type: string
+          nullable: true
+          example: ""
+        getPritimInSak:
+          type: object
+          properties:
+            arrivedList:
+              type: array
+              items:
+                type: string
+              example: 
+                - "RA11133355566"
+                - "RR11133355588"
+                - "RA11133355577"
+                - "RR11133355599"
+                - "RA11133355599"
+            receivedOkList:
+              type: array
+              items:
+                type: string
+              example:
+                - "RR11133355566"
+                - "RR11133355577"
+            receivedOtherList:
+              type: array
+              items:
+                type: string
+              example:
+                - "RR11111111111"
+        infoError:
+          $ref: "#/components/schemas/InfoError"
+
 security:
   - bearerAuth: []  
