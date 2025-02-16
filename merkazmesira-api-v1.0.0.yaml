@@ -1002,9 +1002,9 @@ components:
         barcodeMekabets:
           type: string
           example: ""
-        codeReason:
-          type: integer
-          example: 1
+        barcodeHodaa:
+          type: string
+          example: ""  
         dateTime:
           type: string
           format: date-time
@@ -1021,11 +1021,11 @@ components:
         userId:
           type: string
           example: "1000028"
-        barcodes:
+        barcodeItem:
           type: array
           items:
             $ref: "#/components/schemas/BarcodeItem"
-        perutPeula:
+        kodPeula:
           type: integer
           example: 3
         moveToChatima:
@@ -1052,10 +1052,7 @@ components:
           example: "11 ר"
         serviceDescription:
           type: string
-          example: ""
-        warringDescription:
-          type: string
-          example: ""
+          example: ""        
     Details:
       type: object
       properties:
@@ -1990,10 +1987,10 @@ components:
         userId:
           type: string
           example: "1000028"
-        barcodes:
+        barcodeItem:
           type: array
           items:
-            $ref: "#/components/schemas/BarcodeItemReceiving"
+            $ref: "#/components/schemas/BarcodeItem"
         countItems:
           type: integer
           example: 0
@@ -2001,24 +1998,7 @@ components:
           $ref: "#/components/schemas/DetailsItemReceiving"
         infoError:
           $ref: "#/components/schemas/InfoError"
-    BarcodeItemReceiving:
-      type: object
-      properties:
-        barcode:
-          type: string
-          example: "RR11111111111"
-        barcodeMekabets:
-          type: string
-          example: ""
-        mikum:
-          type: string
-          example: "ג1"
-        serviceDescription:
-          type: string
-          example: ""
-        warringDescription:
-          type: string
-          example: ""
+    
     DetailsItemReceiving:
       type: object
       properties:
